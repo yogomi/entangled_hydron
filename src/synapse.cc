@@ -1,5 +1,5 @@
-#include "synapse.h"
+// Copyright 2014 Makoto Yano
 
-int aa() {
-  return 0;
-}
+#include "include/synapse.h"
+
+Synapse::Synapse() {}
