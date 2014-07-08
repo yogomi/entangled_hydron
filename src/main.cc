@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "include/synapse.h"
+#include "include/hydron.h"
 #include "include/database.h"
 
 int main() {
