@@ -8,7 +8,6 @@ class Database {
   Database(void);
   ~Database(void) {}
  private:
-  void Init(void);
   char* database_name_;
 };
 
