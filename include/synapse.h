@@ -7,10 +7,12 @@
 
 class SynapseId {
  public:
-  SynapseId():id_[0](0), id_[1](0), id_[2](0) {}
+  SynapseId(): x_(0), y_(0), z_(0) {}
+  SynapseId(uint32_t x, uint32_t y, uint32_t z)
+    : x_(x), y_(y), z_(z) {}
   ~SynapseId() {}
  private:
-  uint32_t id_[3];
+  uint32_t x_, y_, z_;
 };
 
 class Synapse {
