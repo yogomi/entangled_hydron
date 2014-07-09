@@ -6,10 +6,12 @@
 #include <cstdint>
 #include <list>
 
+namespace hydron {
+
 class HydronId {
  public:
   HydronId(): x_(0), y_(0), z_(0) {}
-  HydronId(int32_t x, int32_t y, int32_t z)
+  HydronId(const int32_t x, const int32_t y, const int32_t z)
     : x_(x), y_(y), z_(z) {}
   ~HydronId() {}
  private:
@@ -19,12 +21,19 @@ class HydronId {
 class Hydron {
  public:
   Hydron();
+  Hydron(const int32_t x, const int32_t y, const int32_t z);
+  void ChangeId(const int32_t x, const int32_t y, const int32_t z);
   ~Hydron() {}
  private:
   std::list<HydronId> connecting_hydron_;
   HydronId id_;
+  uint32_t step_;
   uint32_t threshold_;
   uint32_t strength_;
 };
+
+typedef std::list<Hydron> Colony;
+
+}  // namespace hydron
 
 #endif  // INCLUDE_HYDRON_H_

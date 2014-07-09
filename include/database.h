@@ -3,12 +3,12 @@
 #ifndef INCLUDE_DATABASE_H_
 #define INCLUDE_DATABASE_H_
 
-class Database {
- public:
-  Database(void);
-  ~Database(void) {}
- private:
-  char* database_name_;
-};
+#include "include/hydron.h"
+
+namespace hydron {
+
+void Save(Colony colony);
+
+}  // namespace hydron
 
 #endif  // INCLUDE_DATABASE_H_

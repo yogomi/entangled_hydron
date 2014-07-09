@@ -1,8 +1,13 @@
 // Copyright 2014 Makoto Yano
 
-#include <stdlib.h>
+#include <list>
 
 #include "include/database.h"
+#include "include/hydron.h"
 
-Database::Database(void) {
+namespace hydron {
+
+void Save(Colony colony) {
 }
+
+}  // namespace hydron
