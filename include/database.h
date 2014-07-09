@@ -7,7 +7,7 @@
 
 namespace hydron {
 
-void Save(Colony colony);
+void Save(const Colony &colony);
 
 }  // namespace hydron
 

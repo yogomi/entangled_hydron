@@ -18,5 +18,6 @@ Colony CreateColony() {
 
 int main() {
   Colony colony = CreateColony();
+  hydron::Save(colony);
   return 0;
 }
