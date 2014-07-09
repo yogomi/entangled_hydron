@@ -15,13 +15,13 @@ class HydronId {
     : x_(x), y_(y), z_(z) {}
   ~HydronId() {}
 
-  const int32_t x() {
+  int32_t x() const {
     return x_;
   }
-  const int32_t y() {
+  int32_t y() const {
     return y_;
   }
-  const int32_t z() {
+  int32_t z() const {
     return z_;
   }
  private:
@@ -35,7 +35,11 @@ class Hydron {
   void ChangeId(const int32_t x, const int32_t y, const int32_t z);
   ~Hydron() {}
 
-  const HydronId Id() {
+  void ConnectTo(const int32_t x, const int32_t y, const int32_t z);
+  void ConnectTo(const HydronId &id);
+  void ConnectTo(const Hydron& h);
+
+  HydronId Id() const {
     return id_;
   }
   void ShowStatus();
