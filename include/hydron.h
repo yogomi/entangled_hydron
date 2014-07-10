@@ -11,12 +11,14 @@
 namespace hydron {
 
 typedef common3d::Vector<int32_t> HydronId;
+typedef common3d::Vector<float> Direction;
 
 class Hydron {
  public:
   Hydron();
   Hydron(const int32_t x, const int32_t y, const int32_t z);
   void ChangeId(const int32_t x, const int32_t y, const int32_t z);
+  void SetHeadDirection(const float x, const float y, const float z);
   ~Hydron() {}
 
   void ConnectTo(const int32_t x, const int32_t y, const int32_t z);
@@ -27,11 +29,15 @@ class Hydron {
     return id_;
   }
   void ShowStatus();
+
  private:
   std::list<HydronId> connecting_hydron_;
   HydronId id_;
-  uint32_t threshold_;
-  uint32_t strength_;
+  Direction head_direction_;
+  float temperature_;
+  float threshold_;
+  float strength_;
+  float radiation_ability_;
   uint32_t step_;
   uint32_t refractory_period_;
 };

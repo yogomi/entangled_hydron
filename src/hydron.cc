@@ -10,20 +10,32 @@ namespace hydron {
 
 Hydron::Hydron()
   : id_(HydronId())
-  , threshold_(0)
-  , strength_(1)
+  , temperature_(0.0f)
+  , threshold_(0.0f)
+  , strength_(1.0f)
+  , radiation_ability_(1.0f)
   , step_(0)
-  , refractory_period_(0) {}
+  , refractory_period_(0) {
+  SetHeadDirection(0.0f, 1.0f, 0.0f);
+}
 
 Hydron::Hydron(const int32_t x, const int32_t y, const int32_t z)
   :id_(HydronId(x, y, z))
-  , threshold_(0)
-  , strength_(1)
+  , temperature_(0.0f)
+  , threshold_(0.0f)
+  , strength_(1.0f)
+  , radiation_ability_(1.0f)
   , step_(0)
-  , refractory_period_(0) {}
+  , refractory_period_(0) {
+  SetHeadDirection(0.0f, 1.0f, 0.0f);
+}
 
 void Hydron::ChangeId(const int32_t x, const int32_t y, const int32_t z) {
   id_ = HydronId(x, y, z);
+}
+
+void Hydron::SetHeadDirection(const float x, const float y, const float z) {
+  head_direction_ = Direction(x, y, z);
 }
 
 void Hydron::ConnectTo(const int32_t x, const int32_t y, const int32_t z) {
@@ -40,8 +52,14 @@ void Hydron::ConnectTo(const Hydron &h) {
 
 void Hydron::ShowStatus() {
   printf("ID: (%d, %d, %d); ", id_.x(), id_.y(), id_.z());
-  printf("threshold: %d; ", threshold_);
-  printf("strength: %d; ", strength_);
+  printf("Head Direction: (%f, %f, %f)"
+        , head_direction_.x()
+        , head_direction_.y()
+        , head_direction_.z());
+  printf("temperatur: %f; ", temperature_);
+  printf("threshold: %f; ", threshold_);
+  printf("strength: %f; ", strength_);
+  printf("radiation ability: %f; ", radiation_ability_);
   printf("step: %d; ", step_);
   printf("refractory period: %d; ", refractory_period_);
   printf("connectiong hydron count: %lu; ", connecting_hydron_.size());
