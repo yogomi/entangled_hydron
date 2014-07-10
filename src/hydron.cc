@@ -44,7 +44,7 @@ void Hydron::ShowStatus() {
   printf("strength: %d; ", strength_);
   printf("step: %d; ", step_);
   printf("refractory period: %d; ", refractory_period_);
-  printf("connectiong hydron count: %u; ", connecting_hydron_.size());
+  printf("connectiong hydron count: %lu; ", connecting_hydron_.size());
   printf("connecting hydron ids: ");
   std::for_each(connecting_hydron_.begin()
               , connecting_hydron_.end()

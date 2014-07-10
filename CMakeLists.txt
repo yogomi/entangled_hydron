@@ -4,4 +4,6 @@ project(entangled_hydron)
 list(APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS}")
 
 add_subdirectory(common3d)
+include_directories(common3d)
+
 add_subdirectory(src)

@@ -6,27 +6,11 @@
 #include <cstdint>
 #include <list>
 
+#include "include/vector.h"
+
 namespace hydron {
 
-class HydronId {
- public:
-  HydronId(): x_(0), y_(0), z_(0) {}
-  HydronId(const int32_t x, const int32_t y, const int32_t z)
-    : x_(x), y_(y), z_(z) {}
-  ~HydronId() {}
-
-  int32_t x() const {
-    return x_;
-  }
-  int32_t y() const {
-    return y_;
-  }
-  int32_t z() const {
-    return z_;
-  }
- private:
-  int32_t x_, y_, z_;
-};
+typedef common3d::Vector<int32_t> HydronId;
 
 class Hydron {
  public:
