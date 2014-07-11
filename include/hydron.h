@@ -37,7 +37,6 @@ class Hydron {
   float threshold_;
   float strength_;
   float radiation_ability_;
-  uint32_t step_;
   uint32_t refractory_period_;
 };
 

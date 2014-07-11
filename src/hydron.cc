@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "include/vector.h"
+#include "include/random_number_generator.h"
 #include "include/hydron.h"
 
 namespace hydron {
@@ -15,9 +16,10 @@ Hydron::Hydron()
   , threshold_(0.0f)
   , strength_(1.0f)
   , radiation_ability_(1.0f)
-  , step_(0)
   , refractory_period_(0) {
-  SetHeadDirection(0.0f, 1.0f, 0.0f);
+  SetHeadDirection(Random<float>(-1.0f, 1.0f)
+                , Random<float>(-1.0f, 1.0f)
+                , Random<float>(-1.0f, 1.0f));
 }
 
 Hydron::Hydron(const int32_t x, const int32_t y, const int32_t z)
@@ -26,9 +28,10 @@ Hydron::Hydron(const int32_t x, const int32_t y, const int32_t z)
   , threshold_(0.0f)
   , strength_(1.0f)
   , radiation_ability_(1.0f)
-  , step_(0)
   , refractory_period_(0) {
-  SetHeadDirection(0.0f, 1.0f, 0.0f);
+  SetHeadDirection(Random<float>(-1.0f, 1.0f)
+                , Random<float>(-1.0f, 1.0f)
+                , Random<float>(-1.0f, 1.0f));
 }
 
 void Hydron::ChangeId(const int32_t x, const int32_t y, const int32_t z) {
@@ -61,7 +64,6 @@ void Hydron::ShowStatus() {
   printf("threshold: %f; ", threshold_);
   printf("strength: %f; ", strength_);
   printf("radiation ability: %f; ", radiation_ability_);
-  printf("step: %d; ", step_);
   printf("refractory period: %d; ", refractory_period_);
   printf("connectiong hydron count: %lu; ", connecting_hydron_.size());
   printf("connecting hydron ids: ");
