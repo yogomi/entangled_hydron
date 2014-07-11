@@ -1,4 +1,6 @@
 .o
+.a
+.so
 CMakeCache.txt
 CMakeFiles/
 Makefile

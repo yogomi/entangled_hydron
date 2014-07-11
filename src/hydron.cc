@@ -36,7 +36,7 @@ void Hydron::ChangeId(const int32_t x, const int32_t y, const int32_t z) {
 }
 
 void Hydron::SetHeadDirection(const float x, const float y, const float z) {
-  head_direction_ = common3d::Vector(x, y, z);
+  head_direction_ = common3d::Normalize(common3d::Vector(x, y, z));
 }
 
 void Hydron::ConnectTo(const int32_t x, const int32_t y, const int32_t z) {
