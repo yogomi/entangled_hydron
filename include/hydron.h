@@ -10,8 +10,7 @@
 
 namespace hydron {
 
-typedef common3d::Vector<int32_t> HydronId;
-typedef common3d::Vector<float> Direction;
+typedef common3d::Vector HydronId;
 
 class Hydron {
  public:
@@ -33,7 +32,7 @@ class Hydron {
  private:
   std::list<HydronId> connecting_hydron_;
   HydronId id_;
-  Direction head_direction_;
+  common3d::Vector head_direction_;
   float temperature_;
   float threshold_;
   float strength_;

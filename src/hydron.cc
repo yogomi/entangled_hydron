@@ -4,6 +4,7 @@
 #include <list>
 #include <algorithm>
 
+#include "include/vector.h"
 #include "include/hydron.h"
 
 namespace hydron {
@@ -35,7 +36,7 @@ void Hydron::ChangeId(const int32_t x, const int32_t y, const int32_t z) {
 }
 
 void Hydron::SetHeadDirection(const float x, const float y, const float z) {
-  head_direction_ = Direction(x, y, z);
+  head_direction_ = common3d::Vector(x, y, z);
 }
 
 void Hydron::ConnectTo(const int32_t x, const int32_t y, const int32_t z) {
@@ -51,7 +52,7 @@ void Hydron::ConnectTo(const Hydron &h) {
 }
 
 void Hydron::ShowStatus() {
-  printf("ID: (%d, %d, %d); ", id_.x(), id_.y(), id_.z());
+  printf("ID: (%f, %f, %f); ", id_.x(), id_.y(), id_.z());
   printf("Head Direction: (%f, %f, %f)"
         , head_direction_.x()
         , head_direction_.y()
@@ -67,7 +68,7 @@ void Hydron::ShowStatus() {
   std::for_each(connecting_hydron_.begin()
               , connecting_hydron_.end()
               , [](HydronId &id) {
-    printf("(%d, %d, %d) ", id.x(), id.y(), id.z());
+    printf("(%f, %f, %f) ", id.x(), id.y(), id.z());
   });
   printf("\n");
 }
