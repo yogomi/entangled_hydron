@@ -12,12 +12,32 @@ namespace hydron {
 
 typedef common3d::Vector HydronId;
 
+struct HydronParameter {
+  float temperature;
+  float threshold;
+  float strength;
+  float radiation_ability;
+  uint32_t refractory_period;
+};
+
 class Hydron {
  public:
   Hydron();
   Hydron(const int32_t x, const int32_t y, const int32_t z);
+
   void ChangeId(const int32_t x, const int32_t y, const int32_t z);
   void SetHeadDirection(const float x, const float y, const float z);
+
+  void SetParameter(const float temperature
+                , const float threshold
+                , const float strength
+                , const float radiation_ability
+                , const uint32_t refractory_period);
+  void SetParameter(const struct HydronParameter &parameter);
+  struct HydronParameter Parameter() const {
+    return parameter_;
+  }
+
   ~Hydron() {}
 
   void ConnectTo(const int32_t x, const int32_t y, const int32_t z);
@@ -30,17 +50,11 @@ class Hydron {
   void ShowStatus();
 
  private:
-  std::list<HydronId> connecting_hydron_;
   HydronId id_;
   common3d::Vector head_direction_;
-  float temperature_;
-  float threshold_;
-  float strength_;
-  float radiation_ability_;
-  uint32_t refractory_period_;
+  struct HydronParameter parameter_;
+  std::list<HydronId> connecting_hydron_;
 };
-
-typedef std::list<Hydron> Colony;
 
 }  // namespace hydron
 

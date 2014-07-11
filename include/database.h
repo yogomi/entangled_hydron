@@ -3,7 +3,7 @@
 #ifndef INCLUDE_DATABASE_H_
 #define INCLUDE_DATABASE_H_
 
-#include "include/hydron.h"
+#include "./colony.h"
 
 namespace hydron {
 

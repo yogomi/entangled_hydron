@@ -3,8 +3,9 @@
 #include <list>
 #include <algorithm>
 
-#include "include/hydron.h"
-#include "include/database.h"
+#include "./hydron.h"
+#include "./colony.h"
+#include "./database.h"
 
 using hydron::Colony;
 using hydron::Hydron;
