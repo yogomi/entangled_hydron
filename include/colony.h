@@ -4,12 +4,21 @@
 #define INCLUDE_COLONY_H_
 
 #include <list>
+#include <string>
 
 #include "./hydron.h"
 
 namespace hydron {
 
-typedef std::list<Hydron> Colony;
+class Colony :public std::list<Hydron> {
+ public:
+  explicit Colony(const char *colony_name):colony_name_(colony_name) {}
+  virtual ~Colony() {}
+  void Save() const;
+ private:
+  Colony() {}
+  std::string colony_name_;
+};
 
 }  // namespace hydron
 

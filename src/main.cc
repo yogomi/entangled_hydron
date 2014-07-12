@@ -11,7 +11,7 @@ using hydron::Colony;
 using hydron::Hydron;
 
 Colony CreateColony() {
-  Colony colony;
+  Colony colony("test_colony");
   colony.push_back(Hydron(2, 4, 3));
   std::for_each(colony.begin(), colony.end()
       , [](Hydron &h) {
@@ -32,6 +32,6 @@ Colony CreateColony() {
 
 int main() {
   Colony colony = CreateColony();
-  hydron::Save(colony);
+  colony.Save();
   return 0;
 }

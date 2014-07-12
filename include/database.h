@@ -7,8 +7,6 @@
 
 namespace hydron {
 
-void Save(const Colony &colony);
-
 }  // namespace hydron
 
 #endif  // INCLUDE_DATABASE_H_
