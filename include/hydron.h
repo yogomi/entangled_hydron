@@ -23,9 +23,9 @@ struct HydronParameter {
 class Hydron {
  public:
   Hydron();
-  Hydron(const int32_t x, const int32_t y, const int32_t z);
+  Hydron(const float x, const float y, const float z);
 
-  void ChangeId(const int32_t x, const int32_t y, const int32_t z);
+  void ChangeId(const float x, const float y, const float z);
   void SetHeadDirection(const float x, const float y, const float z);
 
   void SetParameter(const float temperature
@@ -40,7 +40,7 @@ class Hydron {
 
   ~Hydron() {}
 
-  void ConnectTo(const int32_t x, const int32_t y, const int32_t z);
+  void ConnectTo(const float x, const float y, const float z);
   void ConnectTo(const HydronId &id);
   void ConnectTo(const Hydron& h);
 

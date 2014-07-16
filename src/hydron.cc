@@ -19,7 +19,7 @@ Hydron::Hydron()
                 , Random<float>(-1.0f, 1.0f));
 }
 
-Hydron::Hydron(const int32_t x, const int32_t y, const int32_t z)
+Hydron::Hydron(const float x, const float y, const float z)
   :id_(HydronId(x, y, z)) {
   SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
   SetHeadDirection(Random<float>(-1.0f, 1.0f)
@@ -27,7 +27,7 @@ Hydron::Hydron(const int32_t x, const int32_t y, const int32_t z)
                 , Random<float>(-1.0f, 1.0f));
 }
 
-void Hydron::ChangeId(const int32_t x, const int32_t y, const int32_t z) {
+void Hydron::ChangeId(const float x, const float y, const float z) {
   id_ = HydronId(x, y, z);
 }
 
@@ -52,7 +52,7 @@ void Hydron::SetParameter(const struct HydronParameter &parameter) {
   parameter_ = parameter;
 }
 
-void Hydron::ConnectTo(const int32_t x, const int32_t y, const int32_t z) {
+void Hydron::ConnectTo(const float x, const float y, const float z) {
   connecting_hydron_.push_back(HydronId(x, y, z));
 }
 

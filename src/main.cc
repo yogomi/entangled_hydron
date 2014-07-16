@@ -32,7 +32,9 @@ Colony CreateColony() {
 
 int main() {
   Colony colony = CreateColony();
+  colony.Print();
   colony.Save();
+  colony.Load();
   colony.Print();
   return 0;
 }
