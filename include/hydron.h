@@ -47,6 +47,7 @@ class Hydron {
   HydronId Id() const {
     return id_;
   }
+  void ExportStatus(FILE *file);
   void ShowStatus();
 
  private:

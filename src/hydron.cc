@@ -63,6 +63,27 @@ void Hydron::ConnectTo(const Hydron &h) {
   connecting_hydron_.push_back(h.Id());
 }
 
+void Hydron::ExportStatus(FILE *file) {
+  auto ExportVector = [&](const common3d::Vector &v) -> void {
+    auto ExportFloat = [&](const float value) -> void {
+      fwrite(&value, sizeof(value), 1, file);
+    };
+    ExportFloat(v.x());
+    ExportFloat(v.y());
+    ExportFloat(v.z());
+  };
+  ExportVector(id_);
+  ExportVector(head_direction_);
+  fwrite(&parameter_, sizeof(parameter_), 1, file);
+  uint64_t connecting_hydron_count = connecting_hydron_.size();
+  fwrite(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
+  std::for_each(connecting_hydron_.begin()
+              , connecting_hydron_.end()
+              , [&](const HydronId &id) {
+    ExportVector(id);
+  });
+}
+
 void Hydron::ShowStatus() {
   printf("ID: (%f, %f, %f); ", id_.x(), id_.y(), id_.z());
   printf("Head Direction: (%f, %f, %f)"
@@ -78,7 +99,7 @@ void Hydron::ShowStatus() {
   printf("connecting hydron ids: ");
   std::for_each(connecting_hydron_.begin()
               , connecting_hydron_.end()
-              , [](HydronId &id) {
+              , [](const HydronId &id) {
     printf("(%f, %f, %f) ", id.x(), id.y(), id.z());
   });
   printf("\n");
