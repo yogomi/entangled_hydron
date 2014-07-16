@@ -1,3 +1,6 @@
 [submodule "common3d"]
 	path = common3d
 	url = https://github.com/yogomi/common3d.git
+[submodule "include/x64_x32"]
+	path = include/x64_x32
+	url = https://github.com/yogomi/x64_x32_lib.git
