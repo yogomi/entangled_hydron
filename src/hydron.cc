@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "./vector.h"
+#include "x64_x32/format_type.h"
 #include "./random_number_generator.h"
 #include "./hydron.h"
 
@@ -95,7 +96,7 @@ void Hydron::ShowStatus() {
   printf("strength: %f; ", parameter_.strength);
   printf("radiation ability: %f; ", parameter_.radiation_ability);
   printf("refractory period: %d; ", parameter_.refractory_period);
-  printf("connectiong hydron count: %lu; ", connecting_hydron_.size());
+  printf("connectiong hydron count: %"PRIuS"; ", connecting_hydron_.size());
   printf("connecting hydron ids: ");
   std::for_each(connecting_hydron_.begin()
               , connecting_hydron_.end()
