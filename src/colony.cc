@@ -22,7 +22,16 @@ void Colony::Save() const {
   uint64_t header = 0;
   fwrite(&header, sizeof(header), 1, file.get());
   std::for_each(this->begin(), this->end()
-      , [&](Hydron h) {h.ExportStatus(file.get());});
+      , [&file](Hydron h) {h.ExportStatus(file.get());});
+}
+
+
+void Colony::Load() {
+}
+
+void Colony::Print() const {
+  std::for_each(this->begin(), this->end()
+      , [](Hydron h) {h.ShowStatus();});
 }
 
 }  // namespace hydron

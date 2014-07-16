@@ -15,6 +15,8 @@ class Colony :public std::list<Hydron> {
   explicit Colony(const char *colony_name):colony_name_(colony_name) {}
   virtual ~Colony() {}
   void Save() const;
+  void Load();
+  void Print() const;
  private:
   Colony() {}
   std::string colony_name_;

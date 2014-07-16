@@ -64,8 +64,8 @@ void Hydron::ConnectTo(const Hydron &h) {
 }
 
 void Hydron::ExportStatus(FILE *file) {
-  auto ExportVector = [&](const common3d::Vector &v) -> void {
-    auto ExportFloat = [&](const float value) -> void {
+  auto ExportVector = [&file](const common3d::Vector &v) -> void {
+    auto ExportFloat = [&file](const float value) -> void {
       fwrite(&value, sizeof(value), 1, file);
     };
     ExportFloat(v.x());
@@ -79,7 +79,7 @@ void Hydron::ExportStatus(FILE *file) {
   fwrite(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
   std::for_each(connecting_hydron_.begin()
               , connecting_hydron_.end()
-              , [&](const HydronId &id) {
+              , [&ExportVector](const HydronId &id) {
     ExportVector(id);
   });
 }

@@ -33,5 +33,6 @@ Colony CreateColony() {
 int main() {
   Colony colony = CreateColony();
   colony.Save();
+  colony.Print();
   return 0;
 }
