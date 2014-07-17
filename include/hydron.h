@@ -47,6 +47,10 @@ class Hydron {
   HydronId Id() const {
     return id_;
   }
+  bool IsZeroHydron() const {
+    return (id_.x() == id_.y() == id_.z() == 0);
+  }
+
   void ExportStatus(FILE *file);
   void ShowStatus();
 
