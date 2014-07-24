@@ -52,23 +52,35 @@ void Hydron::SetParameter(const struct HydronParameter &parameter) {
   parameter_ = parameter;
 }
 
-void Hydron::ConnectTo(const float x, const float y, const float z) {
-  connecting_hydron_.push_back(HydronId(x, y, z));
+void Hydron::ConnectTo(const float x
+                      , const float y
+                      , const float z
+                      , const float weight) {
+  struct HydronConnection next_hydron;
+  next_hydron.id = HydronId(x, y, z);
+  next_hydron.weight = weight;
+  connecting_hydrons_.push_back(next_hydron);
 }
 
-void Hydron::ConnectTo(const HydronId &id) {
-  connecting_hydron_.push_back(id);
+void Hydron::ConnectTo(const HydronId &id, const float weight) {
+  struct HydronConnection next_hydron;
+  next_hydron.id = id;
+  next_hydron.weight = weight;
+  connecting_hydrons_.push_back(next_hydron);
 }
 
-void Hydron::ConnectTo(const Hydron &h) {
-  connecting_hydron_.push_back(h.Id());
+void Hydron::ConnectTo(const Hydron &h, const float weight) {
+  struct HydronConnection next_hydron;
+  next_hydron.id = h.Id();
+  next_hydron.weight = weight;
+  connecting_hydrons_.push_back(next_hydron);
 }
 
 void Hydron::ExportStatus(FILE *file) {
-  auto ExportVector = [&file](const common3d::Vector &v) -> void {
-    auto ExportFloat = [&file](const float value) -> void {
-      fwrite(&value, sizeof(value), 1, file);
-    };
+  auto ExportFloat = [&file](const float value) -> void {
+    fwrite(&value, sizeof(value), 1, file);
+  };
+  auto ExportVector = [&file, &ExportFloat](const common3d::Vector &v) -> void {
     ExportFloat(v.x());
     ExportFloat(v.y());
     ExportFloat(v.z());
@@ -76,12 +88,14 @@ void Hydron::ExportStatus(FILE *file) {
   ExportVector(id_);
   ExportVector(head_direction_);
   fwrite(&parameter_, sizeof(parameter_), 1, file);
-  uint64_t connecting_hydron_count = connecting_hydron_.size();
-  fwrite(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
-  std::for_each(connecting_hydron_.begin()
-              , connecting_hydron_.end()
-              , [&ExportVector](const HydronId &id) {
-    ExportVector(id);
+  uint64_t connecting_hydrons_count = connecting_hydrons_.size();
+  fwrite(&connecting_hydrons_count, sizeof(connecting_hydrons_count), 1, file);
+  std::for_each(connecting_hydrons_.begin()
+              , connecting_hydrons_.end()
+              , [&ExportVector, &ExportFloat](
+                const struct HydronConnection &hydron_connect) {
+    ExportVector(hydron_connect.id);
+    ExportFloat(hydron_connect.weight);
   });
 }
 
@@ -96,12 +110,14 @@ void Hydron::ShowStatus() {
   printf("strength: %f; ", parameter_.strength);
   printf("radiation ability: %f; ", parameter_.radiation_ability);
   printf("refractory period: %d; ", parameter_.refractory_period);
-  printf("connectiong hydron count: %" PRIuS "; ", connecting_hydron_.size());
+  printf("connectiong hydron count: %" PRIuS "; ", connecting_hydrons_.size());
   printf("connecting hydron ids: ");
-  std::for_each(connecting_hydron_.begin()
-              , connecting_hydron_.end()
-              , [](const HydronId &id) {
+  std::for_each(connecting_hydrons_.begin()
+              , connecting_hydrons_.end()
+              , [](const struct HydronConnection &hydron_connect) {
+    HydronId id = hydron_connect.id;
     printf("(%f, %f, %f) ", id.x(), id.y(), id.z());
+    printf("weight: %f; ", hydron_connect.weight);
   });
   printf("\n");
 }

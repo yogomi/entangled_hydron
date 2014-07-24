@@ -20,6 +20,11 @@ struct HydronParameter {
   uint32_t refractory_period;
 };
 
+struct HydronConnection {
+  HydronId id;
+  float weight;
+};
+
 class Hydron {
  public:
   Hydron();
@@ -40,9 +45,12 @@ class Hydron {
 
   ~Hydron() {}
 
-  void ConnectTo(const float x, const float y, const float z);
-  void ConnectTo(const HydronId &id);
-  void ConnectTo(const Hydron& h);
+  void ConnectTo(const float x
+                , const float y
+                , const float z
+                , const float weight = 1);
+  void ConnectTo(const HydronId &id, const float weight = 1);
+  void ConnectTo(const Hydron& h, const float weight = 1);
 
   HydronId Id() const {
     return id_;
@@ -58,7 +66,7 @@ class Hydron {
   HydronId id_;
   common3d::Vector head_direction_;
   struct HydronParameter parameter_;
-  std::list<HydronId> connecting_hydron_;
+  std::list<HydronConnection> connecting_hydrons_;
 };
 
 }  // namespace hydron

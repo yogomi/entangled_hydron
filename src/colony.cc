@@ -67,8 +67,10 @@ int64_t Colony::ReadHydron_(FILE *file) {
 
   fread(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
   for (uint64_t i = 0; i < connecting_hydron_count; ++i) {
+    float weight;
     fread(&v, sizeof(v), 1, file);
-    h.ConnectTo(v.x, v.y, v.z);
+    fread(&weight, sizeof(weight), 1, file);
+    h.ConnectTo(v.x, v.y, v.z, weight);
   }
 
   this->push_back(h);
