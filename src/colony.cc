@@ -51,7 +51,7 @@ std::string Colony::FileName_() const {
 }
 
 int64_t Colony::ReadHydron_(FILE *file) {
-  struct common3d::ExiguousVector v;
+  struct common3d::MinimumElementVector v;
   struct HydronParameter parameter;
   uint64_t connecting_hydron_count;
 
