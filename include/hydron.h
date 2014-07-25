@@ -11,6 +11,7 @@
 namespace hydron {
 
 typedef common3d::Vector HydronId;
+typedef std::list<HydronId> HydronIdList;
 
 struct HydronParameter {
   float temperature;
@@ -59,8 +60,8 @@ class Hydron {
     return (id_.x() == id_.y() == id_.z() == 0);
   }
 
-  void ExportStatus(FILE *file);
-  void ShowStatus();
+  void ExportStatus(FILE *file) const;
+  void ShowStatus() const;
 
  private:
   HydronId id_;

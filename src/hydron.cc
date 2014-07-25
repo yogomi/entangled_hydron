@@ -76,7 +76,7 @@ void Hydron::ConnectTo(const Hydron &h, const float weight) {
   connecting_hydrons_.push_back(next_hydron);
 }
 
-void Hydron::ExportStatus(FILE *file) {
+void Hydron::ExportStatus(FILE *file) const {
   auto ExportFloat = [&file](const float value) -> void {
     fwrite(&value, sizeof(value), 1, file);
   };
@@ -99,7 +99,7 @@ void Hydron::ExportStatus(FILE *file) {
   });
 }
 
-void Hydron::ShowStatus() {
+void Hydron::ShowStatus() const {
   printf("ID: (%f, %f, %f); ", id_.x(), id_.y(), id_.z());
   printf("Head Direction: (%f, %f, %f)"
         , head_direction_.x()

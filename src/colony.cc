@@ -18,18 +18,36 @@ struct FileDeleter {
   }
 };
 
+void Colony::AddHydron(const Hydron &hydron) {
+  hydron_map_[hydron.Id()] = hydron;
+}
+
+void Colony::ConnectHydronToHydron(const Hydron &from
+                                , const Hydron &to
+                                , const float weight) {
+  ConnectHydronToHydron(from.Id(), to.Id(), weight);
+}
+
+void Colony::ConnectHydronToHydron(const HydronId &from
+                                , const HydronId &to
+                                , const float weight) {
+  hydron_map_[from].ConnectTo(to, weight);
+}
+
 void Colony::Save() const {
   std::unique_ptr<FILE, FileDeleter> file(
       std::fopen(FileName_().data() , "wb"));
 
   uint64_t header[2] = {0, 0};
   fwrite(header, sizeof(header), 1, file.get());
-  std::for_each(this->begin(), this->end()
-      , [&file](Hydron h) {h.ExportStatus(file.get());});
+  for (const auto& h : hydron_map_) {
+    h.second.ExportStatus(file.get());
+  }
 }
 
 void Colony::Load() {
-  this->clear();
+  hydron_map_.clear();
+  connection_reverse_map_.clear();
   std::unique_ptr<FILE, FileDeleter> file(
       std::fopen(FileName_().data() , "rb"));
   if (file.get() == nullptr) {
@@ -42,8 +60,9 @@ void Colony::Load() {
 }
 
 void Colony::Print() const {
-  std::for_each(this->begin(), this->end()
-      , [](Hydron h) {h.ShowStatus();});
+  for (auto& h : hydron_map_) {
+    h.second.ShowStatus();
+  }
 }
 
 std::string Colony::FileName_() const {
@@ -73,7 +92,7 @@ int64_t Colony::ReadHydron_(FILE *file) {
     h.ConnectTo(v.x, v.y, v.z, weight);
   }
 
-  this->push_back(h);
+  hydron_map_[h.Id()] = h;
 
   return 0;
 }
