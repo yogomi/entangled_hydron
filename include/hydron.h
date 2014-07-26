@@ -67,6 +67,7 @@ class Hydron {
   HydronId id_;
   common3d::Vector head_direction_;
   struct HydronParameter parameter_;
+  float temperature_buffer_;
   std::list<HydronConnection> connecting_hydrons_;
 };
 

@@ -46,6 +46,7 @@ void Hydron::SetParameter(const float temperature
   parameter_.strength = strength;
   parameter_.radiation_ability = radiation_ability;
   parameter_.refractory_period = refractory_period;
+  temperature_buffer_ = 0;
 }
 
 void Hydron::SetParameter(const struct HydronParameter &parameter) {
