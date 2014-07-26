@@ -15,6 +15,8 @@ class Colony {
   explicit Colony(const char *colony_name):colony_name_(colony_name) {}
   virtual ~Colony() {}
 
+  void Beat();
+
   void AddHydron(const Hydron &hydron);
   void ConnectHydronToHydron(const Hydron &from
                                 , const Hydron &to
@@ -37,6 +39,9 @@ class Colony {
 
  private:
   Colony() {}
+  void Ignition_();
+  void CalculateHeatEffect_();
+  void ApplyFeedback_();
   int64_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 

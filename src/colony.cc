@@ -18,6 +18,12 @@ struct FileDeleter {
   }
 };
 
+void Colony::Beat() {
+  Ignition_();
+  CalculateHeatEffect_();
+  ApplyFeedback_();
+}
+
 void Colony::AddHydron(const Hydron &hydron) {
   hydron_map_[hydron.Id()] = hydron;
 }
@@ -70,6 +76,15 @@ void Colony::Print() const {
 
 std::string Colony::FileName_() const {
   return colony_name_ + ".bin";
+}
+
+void Colony::Ignition_() {
+}
+
+void Colony::CalculateHeatEffect_() {
+}
+
+void Colony::ApplyFeedback_() {
 }
 
 int64_t Colony::ReadHydron_(FILE *file) {
