@@ -107,6 +107,7 @@ void Hydron::ShowStatus() const {
         , head_direction_.y()
         , head_direction_.z());
   printf("temperatur: %f; ", parameter_.temperature);
+  printf("temperatur_buffer: %f; ", temperature_buffer_);
   printf("threshold: %f; ", parameter_.threshold);
   printf("strength: %f; ", parameter_.strength);
   printf("radiation ability: %f; ", parameter_.radiation_ability);

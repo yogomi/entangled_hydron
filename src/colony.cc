@@ -31,7 +31,10 @@ void Colony::ConnectHydronToHydron(const Hydron &from
 void Colony::ConnectHydronToHydron(const HydronId &from
                                 , const HydronId &to
                                 , const float weight) {
-  hydron_map_[from].ConnectTo(to, weight);
+  if (hydron_map_.find(from) != hydron_map_.end()) {
+    hydron_map_[from].ConnectTo(to, weight);
+    connection_reverse_map_[to].push_back(from);
+  }
 }
 
 void Colony::Save() const {
@@ -85,14 +88,14 @@ int64_t Colony::ReadHydron_(FILE *file) {
   h.SetParameter(parameter);
 
   fread(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
+  hydron_map_[h.Id()] = h;
+
   for (uint64_t i = 0; i < connecting_hydron_count; ++i) {
     float weight;
     fread(&v, sizeof(v), 1, file);
     fread(&weight, sizeof(weight), 1, file);
-    h.ConnectTo(v.x, v.y, v.z, weight);
+    ConnectHydronToHydron(h.Id(), HydronId(v.x, v.y, v.z), weight);
   }
-
-  hydron_map_[h.Id()] = h;
 
   return 0;
 }

@@ -37,6 +37,10 @@ int main() {
   colony->Print();
   colony->Save();
   colony->Load();
+  printf("--------------------------------------");
+  printf("--------------------------------------");
+  printf("--------------------------------------");
+  printf("--------------------------------------\n");
   colony->Print();
   std::map<common3d::Vector, Hydron> brain;
   brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
