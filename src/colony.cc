@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <map>
 #include <list>
 #include <algorithm>
 #include <cstdlib>
@@ -24,8 +25,13 @@ void Colony::Beat() {
   ApplyFeedback_();
 }
 
-void Colony::AddHydron(const Hydron &hydron) {
+int32_t Colony::AddHydron(const Hydron &hydron) {
+  if (colony_signpost_.find(hydron.Id()) != colony_signpost_.end()) {
+    return -1;
+  }
   hydron_map_[hydron.Id()] = hydron;
+  colony_signpost_[hydron.Id()] = this;
+  return 0;
 }
 
 void Colony::ConnectHydronToHydron(const Hydron &from
@@ -87,7 +93,7 @@ void Colony::CalculateHeatEffect_() {
 void Colony::ApplyFeedback_() {
 }
 
-int64_t Colony::ReadHydron_(FILE *file) {
+int32_t Colony::ReadHydron_(FILE *file) {
   struct common3d::MinimumElementVector v;
   struct HydronParameter parameter;
   uint64_t connecting_hydron_count;
@@ -114,5 +120,8 @@ int64_t Colony::ReadHydron_(FILE *file) {
 
   return 0;
 }
+
+std::map<HydronId, Colony *> Colony::colony_signpost_;
+std::map<HydronId, HydronIdList> Colony::connection_reverse_map_;
 
 }  // namespace hydron

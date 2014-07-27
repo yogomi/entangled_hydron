@@ -17,7 +17,10 @@ class Colony {
 
   void Beat();
 
-  void AddHydron(const Hydron &hydron);
+  // Add hydron data and map to colony.
+  // Normary success, return 0.
+  // If failed, return a minus value.
+  int32_t AddHydron(const Hydron &hydron);
   void ConnectHydronToHydron(const Hydron &from
                                 , const Hydron &to
                                 , const float weight = 1);
@@ -42,12 +45,13 @@ class Colony {
   void Ignition_();
   void CalculateHeatEffect_();
   void ApplyFeedback_();
-  int64_t ReadHydron_(FILE *file);
+  int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 
   std::string colony_name_;
   std::map<HydronId, Hydron> hydron_map_;
-  std::map<HydronId, HydronIdList> connection_reverse_map_;
+  static std::map<HydronId, Colony *> colony_signpost_;
+  static std::map<HydronId, HydronIdList> connection_reverse_map_;
 };
 
 }  // namespace hydron
