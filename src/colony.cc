@@ -74,10 +74,28 @@ void Colony::Load() {
   while (ReadHydron_(file.get()) == 0) {}
 }
 
-void Colony::Print() const {
+void Colony::ShowHydronsStatus() const {
   for (auto& h : hydron_map_) {
     h.second.ShowStatus();
   }
+}
+
+void Colony::ShowSignpostInformation() const {
+  printf("=================");
+  printf("ShowSignpostInformation");
+  printf(" Begin");
+  printf("=================\n");
+  for (auto& info : colony_signpost_) {
+    printf("((%f, %f, %f), %s)\n"
+        , info.first.x()
+        , info.first.y()
+        , info.first.z()
+        , info.second->Name().c_str());
+  }
+  printf("=================");
+  printf("ShowSignpostInformation");
+  printf(" End");
+  printf("=================\n");
 }
 
 std::string Colony::FileName_() const {

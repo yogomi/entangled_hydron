@@ -38,7 +38,12 @@ class Colony {
   // If could not open file, remain empty Hydron list.
   void Load();
 
-  void Print() const;
+  void ShowHydronsStatus() const;
+  void ShowSignpostInformation() const;
+
+  std::string Name() const {
+    return colony_name_;
+  }
 
  private:
   Colony() {}
