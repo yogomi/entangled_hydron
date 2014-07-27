@@ -38,6 +38,8 @@ class Colony {
   // If could not open file, remain empty Hydron list.
   void Load();
 
+  static Colony* GetAffiliatedColony(const HydronId id);
+
   void ShowHydronsStatus() const;
   void ShowSignpostInformation() const;
 

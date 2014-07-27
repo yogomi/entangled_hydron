@@ -61,9 +61,9 @@ int main() {
   printf("--------------------------------------");
   printf("--------------------------------------\n");
   colony.ShowHydronsStatus();
-  colony.ShowSignpostInformation();
   Colony colony2 = CreateColony2();
-  colony2.ShowSignpostInformation();
+  Colony *c = Colony::GetAffiliatedColony(hydron::HydronId(1, 3, 4));
+  c->ShowHydronsStatus();
   std::map<common3d::Vector, Hydron> brain;
   brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
   return 0;

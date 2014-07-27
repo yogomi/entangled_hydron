@@ -74,6 +74,13 @@ void Colony::Load() {
   while (ReadHydron_(file.get()) == 0) {}
 }
 
+Colony* Colony::GetAffiliatedColony(const HydronId id) {
+  if (colony_signpost_.find(id) == colony_signpost_.end()) {
+    return nullptr;
+  }
+  return colony_signpost_[id];
+}
+
 void Colony::ShowHydronsStatus() const {
   for (auto& h : hydron_map_) {
     h.second.ShowStatus();
