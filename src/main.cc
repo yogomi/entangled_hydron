@@ -54,17 +54,15 @@ Colony CreateColony() {
 int main() {
   Colony colony = CreateColony();
   colony.ShowHydronsStatus();
-  colony.Save();
-  colony.Load();
+  // colony.Save();
   printf("--------------------------------------");
   printf("--------------------------------------");
   printf("--------------------------------------");
   printf("--------------------------------------\n");
-  colony.ShowHydronsStatus();
   Colony colony2 = CreateColony2();
-  Colony *c = Colony::GetAffiliatedColony(hydron::HydronId(1, 3, 4));
-  c->ShowHydronsStatus();
+  colony.Beat();
   std::map<common3d::Vector, Hydron> brain;
   brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
+
   return 0;
 }

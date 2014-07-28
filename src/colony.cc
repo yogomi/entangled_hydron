@@ -31,6 +31,8 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
   }
   hydron_map_[hydron.Id()] = hydron;
   colony_signpost_[hydron.Id()] = this;
+  hydron_map_[hydron.Id()].RegisterToAllHydronMap();
+
   return 0;
 }
 
@@ -110,6 +112,9 @@ std::string Colony::FileName_() const {
 }
 
 void Colony::Ignition_() {
+  for (auto& h : hydron_map_) {
+    h.second.Fire();
+  }
 }
 
 void Colony::CalculateHeatEffect_() {

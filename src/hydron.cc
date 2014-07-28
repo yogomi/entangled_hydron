@@ -7,6 +7,7 @@
 #include "./vector.h"
 #include "x64_x32/format_type.h"
 #include "./random_number_generator.h"
+#include "./colony.h"
 #include "./hydron.h"
 
 namespace hydron {
@@ -27,8 +28,41 @@ Hydron::Hydron(const float x, const float y, const float z)
                 , Random<float>(-1.0f, 1.0f));
 }
 
-void Hydron::ChangeId(const float x, const float y, const float z) {
-  id_ = HydronId(x, y, z);
+void Hydron::RegisterToAllHydronMap() {
+  all_hydron_map_[id_] = this;
+}
+
+void Hydron::Fire() {
+  auto FireNextHydron = [](const struct HydronConnection &connection) -> void {
+    Colony *colony = Colony::GetAffiliatedColony(connection.id);
+    if (colony != nullptr) {
+      printf("Fire (%f, %f, %f)\n", connection.id.x(), connection.id.y(), connection.id.z());
+    }
+  };
+  for_each(connecting_hydrons_.begin()
+        , connecting_hydrons_.end()
+        , FireNextHydron);
+}
+
+void Hydron::AddHeat(const float heat) {
+  temperature_buffer_ += heat;
+}
+
+uint32_t Hydron::ChangeId(const float x, const float y, const float z) {
+  HydronId new_id = HydronId(x, y, z);
+  bool hydron_in_all_hydron_map =
+    all_hydron_map_.find(id_) != all_hydron_map_.end();
+  if (hydron_in_all_hydron_map) {
+    if (all_hydron_map_.find(new_id) != all_hydron_map_.end()) {
+      return -1;
+    }
+    all_hydron_map_.erase(id_);
+  }
+  id_ = new_id;
+  if (hydron_in_all_hydron_map) {
+    RegisterToAllHydronMap();
+  }
+  return 0;
 }
 
 void Hydron::SetHeadDirection(const float x, const float y, const float z) {
@@ -123,5 +157,7 @@ void Hydron::ShowStatus() const {
   });
   printf("\n");
 }
+
+std::map<HydronId, Hydron *> Hydron::all_hydron_map_;
 
 }  // namespace hydron

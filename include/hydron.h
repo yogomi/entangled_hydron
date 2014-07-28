@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <list>
+#include <map>
 
 #include "./vector.h"
 
@@ -30,8 +31,12 @@ class Hydron {
  public:
   Hydron();
   Hydron(const float x, const float y, const float z);
+  void RegisterToAllHydronMap();
 
-  void ChangeId(const float x, const float y, const float z);
+  void Fire();
+  void AddHeat(const float heat);
+
+  uint32_t ChangeId(const float x, const float y, const float z);
   void SetHeadDirection(const float x, const float y, const float z);
 
   void SetParameter(const float temperature
@@ -68,7 +73,8 @@ class Hydron {
   common3d::Vector head_direction_;
   struct HydronParameter parameter_;
   float temperature_buffer_;
-  std::list<HydronConnection> connecting_hydrons_;
+  std::list<struct HydronConnection> connecting_hydrons_;
+  static std::map<HydronId, Hydron *> all_hydron_map_;
 };
 
 }  // namespace hydron
