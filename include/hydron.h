@@ -34,7 +34,7 @@ class Hydron {
   void RegisterToAllHydronMap();
 
   void Fire();
-  void AddHeat(const float heat);
+  void AddHeat(const float &heat);
 
   uint32_t ChangeId(const float x, const float y, const float z);
   void SetHeadDirection(const float x, const float y, const float z);
@@ -57,6 +57,8 @@ class Hydron {
                 , const float weight = 1);
   void ConnectTo(const HydronId &id, const float weight = 1);
   void ConnectTo(const Hydron& h, const float weight = 1);
+
+  std::list<struct HydronConnection> ConnectingHydrons() const;
 
   HydronId Id() const {
     return id_;

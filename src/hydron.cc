@@ -7,7 +7,6 @@
 #include "./vector.h"
 #include "x64_x32/format_type.h"
 #include "./random_number_generator.h"
-#include "./colony.h"
 #include "./hydron.h"
 
 namespace hydron {
@@ -34,9 +33,8 @@ void Hydron::RegisterToAllHydronMap() {
 
 void Hydron::Fire() {
   auto FireNextHydron = [](const struct HydronConnection &connection) -> void {
-    Colony *colony = Colony::GetAffiliatedColony(connection.id);
-    if (colony != nullptr) {
-      printf("Fire (%f, %f, %f)\n", connection.id.x(), connection.id.y(), connection.id.z());
+    if (all_hydron_map_.find(connection.id) != all_hydron_map_.end()) {
+      all_hydron_map_[connection.id]->AddHeat(connection.weight);
     }
   };
   for_each(connecting_hydrons_.begin()
@@ -44,7 +42,7 @@ void Hydron::Fire() {
         , FireNextHydron);
 }
 
-void Hydron::AddHeat(const float heat) {
+void Hydron::AddHeat(const float &heat) {
   temperature_buffer_ += heat;
 }
 
@@ -91,10 +89,7 @@ void Hydron::ConnectTo(const float x
                       , const float y
                       , const float z
                       , const float weight) {
-  struct HydronConnection next_hydron;
-  next_hydron.id = HydronId(x, y, z);
-  next_hydron.weight = weight;
-  connecting_hydrons_.push_back(next_hydron);
+  ConnectTo(HydronId(x, y, z), weight);
 }
 
 void Hydron::ConnectTo(const HydronId &id, const float weight) {
@@ -105,10 +100,11 @@ void Hydron::ConnectTo(const HydronId &id, const float weight) {
 }
 
 void Hydron::ConnectTo(const Hydron &h, const float weight) {
-  struct HydronConnection next_hydron;
-  next_hydron.id = h.Id();
-  next_hydron.weight = weight;
-  connecting_hydrons_.push_back(next_hydron);
+  ConnectTo(h.Id(), weight);
+}
+
+std::list<struct HydronConnection> Hydron::ConnectingHydrons() const {
+  return connecting_hydrons_;
 }
 
 void Hydron::ExportStatus(FILE *file) const {
