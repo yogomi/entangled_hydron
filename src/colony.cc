@@ -147,6 +147,9 @@ void Colony::Ignition_() {
 }
 
 void Colony::CalculateHeatEffect_() {
+  for (auto& h : hydron_map_) {
+    h.second.AdaptHeatEffect();
+  }
 }
 
 void Colony::ApplyFeedback_() {

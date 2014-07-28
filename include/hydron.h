@@ -19,7 +19,7 @@ struct HydronParameter {
   float threshold;
   float strength;
   float radiation_ability;
-  uint32_t refractory_period;
+  uint32_t refractory_span;
 };
 
 struct HydronConnection {
@@ -35,6 +35,7 @@ class Hydron {
 
   void Fire();
   void AddHeat(const float &heat);
+  void AdaptHeatEffect();
 
   uint32_t ChangeId(const float x, const float y, const float z);
   void SetHeadDirection(const float x, const float y, const float z);
@@ -43,7 +44,7 @@ class Hydron {
                 , const float threshold
                 , const float strength
                 , const float radiation_ability
-                , const uint32_t refractory_period);
+                , const uint32_t refractory_span);
   void SetParameter(const struct HydronParameter &parameter);
   struct HydronParameter Parameter() const {
     return parameter_;
@@ -75,6 +76,7 @@ class Hydron {
   common3d::Vector head_direction_;
   struct HydronParameter parameter_;
   float temperature_buffer_;
+  uint32_t refractory_period_;
   std::list<struct HydronConnection> connecting_hydrons_;
   static std::map<HydronId, Hydron *> all_hydron_map_;
 };
