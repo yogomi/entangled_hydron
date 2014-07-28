@@ -113,6 +113,29 @@ void Colony::ShowSignpostInformation() const {
   printf("=================\n");
 }
 
+void Colony::ShowConnectionReverseMap() const {
+  printf("=================");
+  printf("ShowConnectionReverseMap");
+  printf(" Begin");
+  printf("=================\n");
+  for (auto& connection : connection_reverse_map_) {
+    printf("From:(%f, %f, %f) To:"
+        , connection.first.x()
+        , connection.first.y()
+        , connection.first.z());
+    for_each(connection.second.begin()
+            , connection.second.end()
+            , [](const HydronId &id) {
+      printf("(%f, %f, %f), ", id.x(), id.y(), id.z());
+    });
+    printf("\n");
+  }
+  printf("=================");
+  printf("ShowConnectionReverseMap");
+  printf(" End");
+  printf("=================\n");
+}
+
 std::string Colony::FileName_() const {
   return colony_name_ + ".bin";
 }

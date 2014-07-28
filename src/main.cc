@@ -14,25 +14,6 @@ using hydron::Hydron;
 
 Colony CreateColony2() {
   Colony colony("test_colony888");
-  colony.AddHydron(Hydron(2, 9, 3));
-  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
-                              , hydron::HydronId(-12, 3, -4));
-  colony.AddHydron(Hydron(1, 3, 4));
-  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
-                              , hydron::HydronId(3, 4, 5));
-  colony.ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
-                              , hydron::HydronId(3, 4, 5));
-  colony.AddHydron(Hydron(5, 6, 2));
-  colony.ConnectHydronToHydron(hydron::HydronId(2, 4, 3)
-                              , hydron::HydronId(22003, 4313, 334135));
-  colony.ConnectHydronToHydron(hydron::HydronId(5, 6, 2)
-                              , hydron::HydronId(22003, 4313, 334135));
-  colony.ConnectHydronToHydron(hydron::HydronId(0, 0, 0)
-                              , hydron::HydronId(22003, 4313, 334135));
-  return colony;
-}
-Colony CreateColony() {
-  Colony colony("test_colony");
   colony.AddHydron(Hydron(2, 4, 3));
   colony.ConnectHydronToHydron(hydron::HydronId(3, 4, 3)
                               , hydron::HydronId(-12, 3, -4));
@@ -48,6 +29,25 @@ Colony CreateColony() {
                               , hydron::HydronId(22003, 4313, 334135));
   colony.ConnectHydronToHydron(hydron::HydronId(0, 0, 0)
                               , hydron::HydronId(22003, 4313, 334135));
+  return colony;
+}
+Colony CreateColony() {
+  Colony colony("test_colony");
+  colony.AddHydron(Hydron(2, 9, 3));
+  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
+                              , hydron::HydronId(5, 6, 2));
+  colony.AddHydron(Hydron(1, 3, 4));
+  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
+                              , hydron::HydronId(1, 3, 4));
+  colony.ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
+                              , hydron::HydronId(5, 6, 2));
+  colony.AddHydron(Hydron(5, 6, 2));
+  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
+                              , hydron::HydronId(5, 6, 2));
+  colony.ConnectHydronToHydron(hydron::HydronId(5, 6, 2)
+                              , hydron::HydronId(5, 6, 2));
+  colony.ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
+                              , hydron::HydronId(2, 9, 3));
   return colony;
 }
 

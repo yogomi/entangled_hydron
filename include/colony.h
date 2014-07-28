@@ -42,6 +42,7 @@ class Colony {
 
   void ShowHydronsStatus() const;
   void ShowSignpostInformation() const;
+  void ShowConnectionReverseMap() const;
 
   std::string Name() const {
     return colony_name_;
