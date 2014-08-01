@@ -57,6 +57,10 @@ void Colony::ConnectHydronToHydron(const HydronId &from
   }
 }
 
+void Colony::SetFeedCapability(const float &feed_capability) {
+  feed_capability_ = feed_capability;
+}
+
 void Colony::Save() const {
   std::unique_ptr<FILE, FileDeleter> file(
       std::fopen(FileName_().data() , "wb"));

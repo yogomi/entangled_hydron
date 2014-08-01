@@ -12,7 +12,9 @@ namespace hydron {
 
 class Colony {
  public:
-  explicit Colony(const char *colony_name):colony_name_(colony_name) {}
+  explicit Colony(const char *colony_name)
+    :colony_name_(colony_name)
+    , feed_capability_(1.0f) {}
   virtual ~Colony() {}
 
   void Beat();
@@ -28,6 +30,10 @@ class Colony {
                                 , const HydronId &to
                                 , const float weight = 1);
 
+  void SetFeedCapability(const float &feed_capability);
+  float FeedCapability() const {
+    return feed_capability_;
+  }
 
   // Save all Hydrons to file.
   // Filename is colony_name_ + .bin.
@@ -55,6 +61,8 @@ class Colony {
   void ApplyFeedback_();
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
+
+  float feed_capability_;
 
   std::string colony_name_;
   std::map<HydronId, Hydron> hydron_map_;
