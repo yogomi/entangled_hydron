@@ -19,6 +19,11 @@ struct FileDeleter {
   }
 };
 
+void Colony::SetLearningTheory(
+    std::shared_ptr<LearningTheory> learning_theory) {
+  learning_theory_ = learning_theory;
+}
+
 void Colony::Beat() {
   Ignition_();
   CalculateHeatEffect_();

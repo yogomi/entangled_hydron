@@ -22,6 +22,15 @@ class LearningTheory {
                       , struct LearningParameter &parameter) = 0;  // NOLINT
 };
 
+class KeepCurrent: public LearningTheory {
+ public:
+  KeepCurrent() {}
+  ~KeepCurrent() { printf("KeepCurrent Destructor\n"); }
+
+  virtual void Learning(std::map<HydronId, Hydron> &hydron_map
+                      , struct LearningParameter &parameter);  // NOLINT
+};
+
 class FeedLearning: public LearningTheory {
  public:
   FeedLearning() {}

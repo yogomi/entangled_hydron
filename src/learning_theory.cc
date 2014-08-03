@@ -4,6 +4,11 @@
 
 namespace hydron {
 
+void KeepCurrent::Learning(std::map<HydronId, Hydron> &hydron_map
+              , struct LearningParameter &parameter) {  // NOLINT
+  parameter.food -= hydron_map.size();
+}
+
 void FeedLearning::Learning(std::map<HydronId, Hydron> &hydron_map
               , struct LearningParameter &parameter) {  // NOLINT
 }

@@ -8,9 +8,31 @@
 #include "./hydron.h"
 #include "./colony.h"
 #include "./database.h"
+#include "./learning_theory.h"
 
 using hydron::Colony;
 using hydron::Hydron;
+using hydron::FeedLearning;
+
+Colony CreateColony2();
+Colony CreateColony();
+
+int main() {
+  Colony colony = CreateColony();
+  colony.ShowHydronsStatus();
+  // colony.Save();
+  printf("--------------------------------------");
+  printf("--------------------------------------");
+  printf("--------------------------------------");
+  printf("--------------------------------------\n");
+  std::shared_ptr<FeedLearning> feeding(new FeedLearning());
+  colony.SetLearningTheory(feeding);
+  colony.Beat();
+  std::map<common3d::Vector, Hydron> brain;
+  brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
+
+  return 0;
+}
 
 Colony CreateColony2() {
   Colony colony("test_colony888");
@@ -31,6 +53,7 @@ Colony CreateColony2() {
                               , hydron::HydronId(22003, 4313, 334135));
   return colony;
 }
+
 Colony CreateColony() {
   Colony colony("test_colony");
   colony.AddHydron(Hydron(2, 9, 3));
@@ -51,18 +74,3 @@ Colony CreateColony() {
   return colony;
 }
 
-int main() {
-  Colony colony = CreateColony();
-  colony.ShowHydronsStatus();
-  // colony.Save();
-  printf("--------------------------------------");
-  printf("--------------------------------------");
-  printf("--------------------------------------");
-  printf("--------------------------------------\n");
-  Colony colony2 = CreateColony2();
-  colony.Beat();
-  std::map<common3d::Vector, Hydron> brain;
-  brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
-
-  return 0;
-}

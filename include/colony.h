@@ -3,10 +3,12 @@
 #ifndef INCLUDE_COLONY_H_
 #define INCLUDE_COLONY_H_
 
+#include <memory>
 #include <map>
 #include <string>
 
 #include "./hydron.h"
+#include "./learning_theory.h"
 
 namespace hydron {
 
@@ -14,8 +16,11 @@ class Colony {
  public:
   explicit Colony(const char *colony_name)
     :colony_name_(colony_name)
-    , feed_capability_(1.0f) {}
+    , feed_capability_(1.0f)
+    , learning_theory_(new KeepCurrent()) {}
   virtual ~Colony() {}
+
+  void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
 
   void Beat();
 
@@ -63,6 +68,7 @@ class Colony {
   std::string FileName_() const;
 
   float feed_capability_;
+  std::shared_ptr<LearningTheory> learning_theory_;
 
   std::string colony_name_;
   std::map<HydronId, Hydron> hydron_map_;
