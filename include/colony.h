@@ -17,7 +17,7 @@ class Colony {
   explicit Colony(const char *colony_name)
     :colony_name_(colony_name)
     , feed_capability_(1.0f)
-    , learning_theory_(new KeepCurrent()) {}
+    , learning_theory_(new KeepCurrent) {}
   virtual ~Colony() {}
 
   void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
