@@ -50,7 +50,7 @@ class Hydron {
     return parameter_;
   }
 
-  ~Hydron() {}
+  ~Hydron();
 
   void ConnectTo(const float x
                 , const float y

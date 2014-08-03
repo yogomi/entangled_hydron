@@ -19,6 +19,22 @@ struct FileDeleter {
   }
 };
 
+Colony::~Colony() {
+  for (auto &h : hydron_map_) {
+    colony_signpost_.erase(h.first);
+    connection_reverse_map_.erase(h.first);
+    for (auto &reverse_info : connection_reverse_map_) {
+      for_each(reverse_info.second.begin()
+            , reverse_info.second.end()
+            , [&reverse_info, &h](HydronId id) {
+            if (h.first == id) {
+              reverse_info.second.remove(id);
+            }
+          });
+    }
+  }
+}
+
 void Colony::SetLearningTheory(
     std::shared_ptr<LearningTheory> learning_theory) {
   learning_theory_ = learning_theory;
@@ -31,6 +47,8 @@ void Colony::Beat() {
 }
 
 int32_t Colony::AddHydron(const Hydron &hydron) {
+  // If same ID hydron exist in any colony.
+  // Fail AddHydron.
   if (colony_signpost_.find(hydron.Id()) != colony_signpost_.end()) {
     return -1;
   }

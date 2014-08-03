@@ -27,6 +27,12 @@ Hydron::Hydron(const float x, const float y, const float z)
                 , Random<float>(-1.0f, 1.0f));
 }
 
+Hydron::~Hydron() {
+  if (all_hydron_map_[id_] == this) {
+    all_hydron_map_.erase(id_);
+  }
+}
+
 void Hydron::RegisterToAllHydronMap() {
   all_hydron_map_[id_] = this;
 }
