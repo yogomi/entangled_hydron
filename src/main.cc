@@ -27,7 +27,6 @@ int main() {
   printf("--------------------------------------\n");
   std::shared_ptr<FeedLearning> feeding(new FeedLearning);
   colony.SetLearningTheory(feeding);
-  colony.Beat();
   std::map<common3d::Vector, Hydron> brain;
   brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
 

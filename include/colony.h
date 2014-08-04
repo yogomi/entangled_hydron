@@ -22,7 +22,11 @@ class Colony {
 
   void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
 
-  void Beat();
+  // Ignition, CalculationHeatEffect and ApplyFeedback are
+  // functions called by Beat function in Brain class.
+  void Ignition();
+  void CalculateHeatEffect();
+  void ApplyFeedback();
 
   // Add hydron data and map to colony.
   // Normary success, return 0.
@@ -61,9 +65,6 @@ class Colony {
 
  private:
   Colony() {}
-  void Ignition_();
-  void CalculateHeatEffect_();
-  void ApplyFeedback_();
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 

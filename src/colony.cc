@@ -40,10 +40,19 @@ void Colony::SetLearningTheory(
   learning_theory_ = learning_theory;
 }
 
-void Colony::Beat() {
-  Ignition_();
-  CalculateHeatEffect_();
-  ApplyFeedback_();
+void Colony::Ignition() {
+  for (auto& h : hydron_map_) {
+    h.second.Fire();
+  }
+}
+
+void Colony::CalculateHeatEffect() {
+  for (auto& h : hydron_map_) {
+    h.second.AdaptHeatEffect();
+  }
+}
+
+void Colony::ApplyFeedback() {
 }
 
 int32_t Colony::AddHydron(const Hydron &hydron) {
@@ -165,21 +174,6 @@ void Colony::ShowConnectionReverseMap() const {
 
 std::string Colony::FileName_() const {
   return colony_name_ + ".bin";
-}
-
-void Colony::Ignition_() {
-  for (auto& h : hydron_map_) {
-    h.second.Fire();
-  }
-}
-
-void Colony::CalculateHeatEffect_() {
-  for (auto& h : hydron_map_) {
-    h.second.AdaptHeatEffect();
-  }
-}
-
-void Colony::ApplyFeedback_() {
 }
 
 int32_t Colony::ReadHydron_(FILE *file) {
