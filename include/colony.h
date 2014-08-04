@@ -17,7 +17,8 @@ class Colony {
   explicit Colony(const char *colony_name)
     :colony_name_(colony_name)
     , feed_capability_(1.0f)
-    , learning_theory_(new KeepCurrent) {}
+    , learning_theory_(new KeepCurrent)
+    , hydron_map_(new std::map<HydronId, Hydron>) {}
   ~Colony();
 
   void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
@@ -72,7 +73,7 @@ class Colony {
   std::shared_ptr<LearningTheory> learning_theory_;
 
   std::string colony_name_;
-  std::map<HydronId, Hydron> hydron_map_;
+  std::shared_ptr<std::map<HydronId, Hydron>> hydron_map_;
   static std::map<HydronId, Colony *> colony_signpost_;
   static std::map<HydronId, HydronIdList> connection_reverse_map_;
 };

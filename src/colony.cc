@@ -20,7 +20,7 @@ struct FileDeleter {
 };
 
 Colony::~Colony() {
-  for (auto &h : hydron_map_) {
+  for (auto &h : *hydron_map_) {
     colony_signpost_.erase(h.first);
     connection_reverse_map_.erase(h.first);
     for (auto &reverse_info : connection_reverse_map_) {
@@ -41,13 +41,13 @@ void Colony::SetLearningTheory(
 }
 
 void Colony::Ignition() {
-  for (auto& h : hydron_map_) {
+  for (auto& h : *hydron_map_) {
     h.second.Fire();
   }
 }
 
 void Colony::CalculateHeatEffect() {
-  for (auto& h : hydron_map_) {
+  for (auto& h : *hydron_map_) {
     h.second.AdaptHeatEffect();
   }
 }
@@ -61,9 +61,9 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
   if (colony_signpost_.find(hydron.Id()) != colony_signpost_.end()) {
     return -1;
   }
-  hydron_map_[hydron.Id()] = hydron;
+  (*hydron_map_)[hydron.Id()] = hydron;
   colony_signpost_[hydron.Id()] = this;
-  hydron_map_[hydron.Id()].RegisterToAllHydronMap();
+  (*hydron_map_)[hydron.Id()].RegisterToAllHydronMap();
 
   std::list<HydronConnection> connecting_hydrons = hydron.ConnectingHydrons();
   for_each(connecting_hydrons.begin(), connecting_hydrons.end()
@@ -83,8 +83,8 @@ void Colony::ConnectHydronToHydron(const Hydron &from
 void Colony::ConnectHydronToHydron(const HydronId &from
                                 , const HydronId &to
                                 , const float weight) {
-  if (hydron_map_.find(from) != hydron_map_.end()) {
-    hydron_map_[from].ConnectTo(to, weight);
+  if (hydron_map_->find(from) != hydron_map_->end()) {
+    (*hydron_map_)[from].ConnectTo(to, weight);
     connection_reverse_map_[to].push_back(from);
   }
 }
@@ -99,13 +99,13 @@ void Colony::Save() const {
 
   uint64_t header[2] = {0, 0};
   fwrite(header, sizeof(header), 1, file.get());
-  for (const auto& h : hydron_map_) {
+  for (const auto& h : *hydron_map_) {
     h.second.ExportStatus(file.get());
   }
 }
 
 void Colony::Load() {
-  hydron_map_.clear();
+  hydron_map_->clear();
   connection_reverse_map_.clear();
   std::unique_ptr<FILE, FileDeleter> file(
       std::fopen(FileName_().data() , "rb"));
@@ -126,7 +126,7 @@ Colony* Colony::GetAffiliatedColony(const HydronId id) {
 }
 
 void Colony::ShowHydronsStatus() const {
-  for (auto& h : hydron_map_) {
+  for (auto& h : *hydron_map_) {
     h.second.ShowStatus();
   }
 }
@@ -192,7 +192,7 @@ int32_t Colony::ReadHydron_(FILE *file) {
   h.SetParameter(parameter);
 
   fread(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
-  hydron_map_[h.Id()] = h;
+  (*hydron_map_)[h.Id()] = h;
 
   for (uint64_t i = 0; i < connecting_hydron_count; ++i) {
     float weight;
