@@ -24,7 +24,7 @@ class Colony {
   void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
 
   // Ignition, CalculationHeatEffect and ApplyFeedback are
-  // functions called by Beat function in Brain class.
+  // functions called by Beat function in AlliedColonies class.
   void Ignition();
   void CalculateHeatEffect();
   void ApplyFeedback();
@@ -76,6 +76,14 @@ class Colony {
   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map_;
   static std::map<HydronId, Colony *> colony_signpost_;
   static std::map<HydronId, HydronIdList> connection_reverse_map_;
+};
+
+class AlliedColonies {
+ private:
+  AlliedColonies() {}
+  ~AlliedColonies() {}
+
+  void Beat();
 };
 
 }  // namespace hydron

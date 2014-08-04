@@ -207,4 +207,7 @@ int32_t Colony::ReadHydron_(FILE *file) {
 std::map<HydronId, Colony *> Colony::colony_signpost_;
 std::map<HydronId, HydronIdList> Colony::connection_reverse_map_;
 
+void AlliedColonies::Beat() {
+}
+
 }  // namespace hydron
