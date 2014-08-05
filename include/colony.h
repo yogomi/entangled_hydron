@@ -83,7 +83,12 @@ class AlliedColonies {
   AlliedColonies() {}
   ~AlliedColonies() {}
 
+  void SetColony(const std::shared_ptr<Colony> &colony);
+
   void Beat();
+
+ private:
+  std::map<std::string, std::shared_ptr<Colony>> colony_map_;
 };
 
 }  // namespace hydron
