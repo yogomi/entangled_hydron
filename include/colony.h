@@ -16,9 +16,11 @@ class Colony {
  public:
   explicit Colony(const char *colony_name)
     :colony_name_(colony_name)
-    , feed_capability_(1.0f)
+    , learning_parameter_(new struct LearningParameter)
     , learning_theory_(new KeepCurrent)
-    , hydron_map_(new std::map<HydronId, Hydron>) {}
+    , hydron_map_(new std::map<HydronId, Hydron>) {
+      learning_parameter_->food = 1.0f;
+    }
   ~Colony();
 
   void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
@@ -40,10 +42,11 @@ class Colony {
                                 , const HydronId &to
                                 , const float weight = 1);
 
-  void SetFeedCapability(const float &feed_capability);
-  float FeedCapability() const {
-    return feed_capability_;
+  struct LearningParameter LearningParameter() {
+    return *learning_parameter_;
   }
+  void SetLearningParameter(
+      const struct LearningParameter &learning_parameter_);
 
   // Save all Hydrons to file.
   // Filename is colony_name_ + .bin.
@@ -69,7 +72,7 @@ class Colony {
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 
-  float feed_capability_;
+  std::shared_ptr<struct LearningParameter> learning_parameter_;
   std::shared_ptr<LearningTheory> learning_theory_;
 
   std::string colony_name_;

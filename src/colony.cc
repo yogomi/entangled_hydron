@@ -89,8 +89,9 @@ void Colony::ConnectHydronToHydron(const HydronId &from
   }
 }
 
-void Colony::SetFeedCapability(const float &feed_capability) {
-  feed_capability_ = feed_capability;
+void Colony::SetLearningParameter(
+    const struct LearningParameter &learning_parameter) {
+  *learning_parameter_ = learning_parameter;
 }
 
 void Colony::Save() const {
