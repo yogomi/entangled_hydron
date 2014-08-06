@@ -88,6 +88,10 @@ class AlliedColonies {
   void Beat();
 
  private:
+  void IgnitionAllColonies_();
+  void CalculateAllColoniesHeatEffect_();
+  void ApplyAllColoniesFeedback_();
+
   std::map<std::string, std::shared_ptr<Colony>> colony_map_;
 };
 

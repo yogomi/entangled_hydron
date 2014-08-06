@@ -212,6 +212,27 @@ void AlliedColonies::SetColony(const std::shared_ptr<Colony> &colony) {
 }
 
 void AlliedColonies::Beat() {
+  IgnitionAllColonies_();
+  CalculateAllColoniesHeatEffect_();
+  ApplyAllColoniesFeedback_();
+}
+
+void AlliedColonies::IgnitionAllColonies_() {
+  for (auto &colony : colony_map_) {
+    colony.second->Ignition();
+  }
+}
+
+void AlliedColonies::CalculateAllColoniesHeatEffect_() {
+  for (auto &colony : colony_map_) {
+    colony.second->CalculateHeatEffect();
+  }
+}
+
+void AlliedColonies::ApplyAllColoniesFeedback_() {
+  for (auto &colony : colony_map_) {
+    colony.second->ApplyFeedback();
+  }
 }
 
 }  // namespace hydron
