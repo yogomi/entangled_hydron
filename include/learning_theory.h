@@ -4,6 +4,7 @@
 #define INCLUDE_LEARNING_THEORY_H_
 
 #include <map>
+#include <string>
 
 #include "./hydron.h"
 
