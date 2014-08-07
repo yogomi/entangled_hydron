@@ -5,7 +5,6 @@
 
 #include <memory>
 #include <map>
-#include <string>
 
 #include "./hydron.h"
 #include "./colony.h"
@@ -24,7 +23,7 @@ class LearningTheory {
 class KeepCurrent: public LearningTheory {
  public:
   KeepCurrent() {}
-  ~KeepCurrent() { printf("KeepCurrent Destructor\n"); }
+  ~KeepCurrent() {}
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);

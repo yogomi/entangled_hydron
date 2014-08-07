@@ -7,12 +7,16 @@
 #include <map>
 #include <string>
 
+#include "./vector.h"
 #include "./hydron.h"
 #include "./learning_theory.h"
 
 namespace hydron {
 
 struct ColonyParameter {
+  common3d::Vector center;
+  float radius;
+  float feeding_capability;
   float food;
 };
 
@@ -23,7 +27,7 @@ class Colony {
     , parameter_(new struct ColonyParameter)
     , learning_theory_(new KeepCurrent)
     , hydron_map_(new std::map<HydronId, Hydron>) {
-      parameter_->food = 1.0f;
+      Initialize_();
     }
   ~Colony();
 
@@ -72,6 +76,13 @@ class Colony {
 
  private:
   Colony() {}
+  void Initialize_() {
+    parameter_->center = common3d::Vector(0.0f, 0.0f, 0.0f);
+    parameter_->radius = 100.0f;
+    parameter_->feeding_capability = 1.0f;
+    parameter_->food = 0.0f;
+  }
+
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 

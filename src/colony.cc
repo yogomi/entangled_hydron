@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstdio>
 
+#include "./vector.h"
 #include "./hydron.h"
 #include "./colony.h"
 
@@ -174,10 +175,6 @@ void Colony::ShowConnectionReverseMap() const {
   printf("=================\n");
 }
 
-std::string Colony::FileName_() const {
-  return colony_name_ + ".bin";
-}
-
 int32_t Colony::ReadHydron_(FILE *file) {
   struct common3d::MinimumElementVector v;
   struct HydronParameter hydron_parameter;
@@ -204,6 +201,10 @@ int32_t Colony::ReadHydron_(FILE *file) {
   }
 
   return 0;
+}
+
+std::string Colony::FileName_() const {
+  return colony_name_ + ".bin";
 }
 
 std::map<HydronId, Colony *> Colony::colony_signpost_;
