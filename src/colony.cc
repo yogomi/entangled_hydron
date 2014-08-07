@@ -53,6 +53,7 @@ void Colony::CalculateHeatEffect() {
 }
 
 void Colony::ApplyFeedback() {
+  learning_theory_->Learning(hydron_map_, learning_parameter_);
 }
 
 int32_t Colony::AddHydron(const Hydron &hydron) {

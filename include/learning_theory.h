@@ -3,6 +3,7 @@
 #ifndef INCLUDE_LEARNING_THEORY_H_
 #define INCLUDE_LEARNING_THEORY_H_
 
+#include <memory>
 #include <map>
 #include <string>
 
@@ -19,8 +20,8 @@ class LearningTheory {
   LearningTheory() {}
   ~LearningTheory() {}
 
-  virtual void Learning(std::map<HydronId, Hydron> &hydron_map
-                      , struct LearningParameter &parameter) = 0;  // NOLINT
+  virtual void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
+                  , std::shared_ptr<struct LearningParameter> parameter) = 0;
 };
 
 class KeepCurrent: public LearningTheory {
@@ -28,8 +29,8 @@ class KeepCurrent: public LearningTheory {
   KeepCurrent() {}
   ~KeepCurrent() { printf("KeepCurrent Destructor\n"); }
 
-  virtual void Learning(std::map<HydronId, Hydron> &hydron_map
-                      , struct LearningParameter &parameter);  // NOLINT
+  void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
+                , std::shared_ptr<struct LearningParameter> parameter);
 };
 
 class FeedLearning: public LearningTheory {
@@ -37,8 +38,8 @@ class FeedLearning: public LearningTheory {
   FeedLearning() {}
   ~FeedLearning() {}
 
-  void Learning(std::map<HydronId, Hydron> &hydron_map
-              , struct LearningParameter &parameter);  // NOLINT
+  void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
+                , std::shared_ptr<struct LearningParameter> parameter);
 };
 
 }  // namespace hydron
