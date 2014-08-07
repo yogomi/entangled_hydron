@@ -53,7 +53,7 @@ void Colony::CalculateHeatEffect() {
 }
 
 void Colony::ApplyFeedback() {
-  learning_theory_->Learning(hydron_map_, learning_parameter_);
+  learning_theory_->Learning(hydron_map_, parameter_);
 }
 
 int32_t Colony::AddHydron(const Hydron &hydron) {
@@ -90,9 +90,9 @@ void Colony::ConnectHydronToHydron(const HydronId &from
   }
 }
 
-void Colony::SetLearningParameter(
-    const struct LearningParameter &learning_parameter) {
-  *learning_parameter_ = learning_parameter;
+void Colony::SetParameter(
+    const struct ColonyParameter &parameter) {
+  *parameter_ = parameter;
 }
 
 void Colony::Save() const {
@@ -180,7 +180,7 @@ std::string Colony::FileName_() const {
 
 int32_t Colony::ReadHydron_(FILE *file) {
   struct common3d::MinimumElementVector v;
-  struct HydronParameter parameter;
+  struct HydronParameter hydron_parameter;
   uint64_t connecting_hydron_count;
 
   if (fread(&v, sizeof(v), 1, file) <= 0) {
@@ -190,8 +190,8 @@ int32_t Colony::ReadHydron_(FILE *file) {
   fread(&v, sizeof(v), 1, file);
   h.SetHeadDirection(v.x, v.y, v.z);
 
-  fread(&parameter, sizeof(parameter), 1, file);
-  h.SetParameter(parameter);
+  fread(&hydron_parameter, sizeof(hydron_parameter), 1, file);
+  h.SetParameter(hydron_parameter);
 
   fread(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
   (*hydron_map_)[h.Id()] = h;

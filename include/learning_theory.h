@@ -8,12 +8,9 @@
 #include <string>
 
 #include "./hydron.h"
+#include "./colony.h"
 
 namespace hydron {
-
-struct LearningParameter {
-  float food;
-};
 
 class LearningTheory {
  public:
@@ -21,7 +18,7 @@ class LearningTheory {
   ~LearningTheory() {}
 
   virtual void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                  , std::shared_ptr<struct LearningParameter> parameter) = 0;
+                  , std::shared_ptr<struct ColonyParameter> parameter) = 0;
 };
 
 class KeepCurrent: public LearningTheory {
@@ -30,7 +27,7 @@ class KeepCurrent: public LearningTheory {
   ~KeepCurrent() { printf("KeepCurrent Destructor\n"); }
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct LearningParameter> parameter);
+                , std::shared_ptr<struct ColonyParameter> parameter);
 };
 
 class FeedLearning: public LearningTheory {
@@ -39,7 +36,7 @@ class FeedLearning: public LearningTheory {
   ~FeedLearning() {}
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct LearningParameter> parameter);
+                , std::shared_ptr<struct ColonyParameter> parameter);
 };
 
 }  // namespace hydron

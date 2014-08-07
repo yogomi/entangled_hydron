@@ -12,14 +12,18 @@
 
 namespace hydron {
 
+struct ColonyParameter {
+  float food;
+};
+
 class Colony {
  public:
   explicit Colony(const char *colony_name)
     :colony_name_(colony_name)
-    , learning_parameter_(new struct LearningParameter)
+    , parameter_(new struct ColonyParameter)
     , learning_theory_(new KeepCurrent)
     , hydron_map_(new std::map<HydronId, Hydron>) {
-      learning_parameter_->food = 1.0f;
+      parameter_->food = 1.0f;
     }
   ~Colony();
 
@@ -42,11 +46,10 @@ class Colony {
                                 , const HydronId &to
                                 , const float weight = 1);
 
-  struct LearningParameter LearningParameter() {
-    return *learning_parameter_;
+  struct ColonyParameter Parameter() {
+    return *parameter_;
   }
-  void SetLearningParameter(
-      const struct LearningParameter &learning_parameter_);
+  void SetParameter(const struct ColonyParameter &parameter);
 
   // Save all Hydrons to file.
   // Filename is colony_name_ + .bin.
@@ -72,7 +75,7 @@ class Colony {
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 
-  std::shared_ptr<struct LearningParameter> learning_parameter_;
+  std::shared_ptr<struct ColonyParameter> parameter_;
   std::shared_ptr<LearningTheory> learning_theory_;
 
   std::string colony_name_;
