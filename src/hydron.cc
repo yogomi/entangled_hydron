@@ -27,6 +27,14 @@ Hydron::Hydron(const float x, const float y, const float z)
                 , Random<float>(-1.0f, 1.0f));
 }
 
+Hydron::Hydron(const HydronId &id)
+  : id_(id) {
+  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
+  SetHeadDirection(Random<float>(-1.0f, 1.0f)
+                , Random<float>(-1.0f, 1.0f)
+                , Random<float>(-1.0f, 1.0f));
+}
+
 Hydron::~Hydron() {
   if (all_hydron_map_[id_] == this) {
     all_hydron_map_.erase(id_);

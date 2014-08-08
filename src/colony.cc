@@ -9,6 +9,7 @@
 #include <cstdio>
 
 #include "./vector.h"
+#include "./cube.h"
 #include "./hydron.h"
 #include "./colony.h"
 
@@ -54,7 +55,9 @@ void Colony::CalculateHeatEffect() {
 }
 
 void Colony::ApplyFeedback() {
+  Feeding_();
   learning_theory_->Learning(hydron_map_, parameter_);
+  Digest_();
 }
 
 int32_t Colony::AddHydron(const Hydron &hydron) {
@@ -173,6 +176,21 @@ void Colony::ShowConnectionReverseMap() const {
   printf("ShowConnectionReverseMap");
   printf(" End");
   printf("=================\n");
+}
+
+void Colony::Feeding_() {
+  parameter_->food += parameter_->feed_capability;
+}
+
+void Colony::Digest_() {
+  float volume = common3d::CubeVolumeFromBothEndVertix(
+                        parameter_->max_area_vertix
+                        , parameter_->min_area_vertix);
+  float density = parameter_->food / volume;
+  if (density > parameter_->threshold_density) {
+    Hydron h = learning_theory_->CreateHydron();
+    AddHydron(h);
+  }
 }
 
 int32_t Colony::ReadHydron_(FILE *file) {

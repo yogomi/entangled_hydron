@@ -14,10 +14,12 @@
 namespace hydron {
 
 struct ColonyParameter {
-  common3d::Vector center;
-  float radius;
-  float feeding_capability;
+  common3d::Vector max_area_vertix;
+  common3d::Vector min_area_vertix;
+  float feed_capability;
   float food;
+  float create_hydron_cost;
+  float threshold_density;
 };
 
 class Colony {
@@ -76,12 +78,17 @@ class Colony {
 
  private:
   Colony() {}
+
   void Initialize_() {
-    parameter_->center = common3d::Vector(0.0f, 0.0f, 0.0f);
-    parameter_->radius = 100.0f;
-    parameter_->feeding_capability = 1.0f;
+    parameter_->max_area_vertix = common3d::Vector(100.0f, 100.0f, 100.0f);
+    parameter_->min_area_vertix = common3d::Vector(-100.0f, -100.0f, -100.0f);
+    parameter_->feed_capability = 100.0f;
     parameter_->food = 0.0f;
+    parameter_->create_hydron_cost = 1000.0f;
+    parameter_->threshold_density = 10000.0f;
   }
+  void Feeding_();
+  void Digest_();
 
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;

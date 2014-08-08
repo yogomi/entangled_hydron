@@ -18,6 +18,9 @@ class LearningTheory {
 
   virtual void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                   , std::shared_ptr<struct ColonyParameter> parameter) = 0;
+  virtual Hydron CreateHydron(
+                  std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
+                  , std::shared_ptr<struct ColonyParameter> parameter) = 0;
 };
 
 class KeepCurrent: public LearningTheory {
@@ -27,6 +30,8 @@ class KeepCurrent: public LearningTheory {
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
+  Hydron CreateHydron(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
+                , std::shared_ptr<struct ColonyParameter> parameter);
 };
 
 class FeedLearning: public LearningTheory {
@@ -35,6 +40,8 @@ class FeedLearning: public LearningTheory {
   ~FeedLearning() {}
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
+                , std::shared_ptr<struct ColonyParameter> parameter);
+  Hydron CreateHydron(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
 };
 

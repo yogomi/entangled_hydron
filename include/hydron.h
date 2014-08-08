@@ -31,6 +31,7 @@ class Hydron {
  public:
   Hydron();
   Hydron(const float x, const float y, const float z);
+  explicit Hydron(const HydronId &id);
   void RegisterToAllHydronMap();
 
   void Fire();
