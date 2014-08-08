@@ -188,7 +188,7 @@ void Colony::Digest_() {
                         , parameter_->min_area_vertix);
   float density = parameter_->food / volume;
   if (density > parameter_->threshold_density) {
-    Hydron h = learning_theory_->CreateHydron();
+    Hydron h = learning_theory_->CreateHydron(hydron_map_, parameter_);
     AddHydron(h);
   }
 }
