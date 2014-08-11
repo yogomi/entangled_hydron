@@ -8,6 +8,7 @@
 #include <map>
 
 #include "./vector.h"
+#include "./neighborhood_map.h"
 
 namespace hydron {
 
@@ -80,6 +81,7 @@ class Hydron {
   uint32_t refractory_period_;
   std::list<struct HydronConnection> connecting_hydrons_;
   static std::map<HydronId, Hydron *> all_hydron_map_;
+  static common3d::BlockGrid neighbor_hydron_searcher_;
 };
 
 }  // namespace hydron

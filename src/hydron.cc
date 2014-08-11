@@ -38,11 +38,13 @@ Hydron::Hydron(const HydronId &id)
 Hydron::~Hydron() {
   if (all_hydron_map_[id_] == this) {
     all_hydron_map_.erase(id_);
+    neighbor_hydron_searcher_.RemoveVector(id_);
   }
 }
 
 void Hydron::RegisterToAllHydronMap() {
   all_hydron_map_[id_] = this;
+  neighbor_hydron_searcher_.AddVector(id_);
 }
 
 void Hydron::Fire() {
@@ -190,5 +192,6 @@ void Hydron::ShowStatus() const {
 }
 
 std::map<HydronId, Hydron *> Hydron::all_hydron_map_;
+common3d::BlockGrid Hydron::neighbor_hydron_searcher_;
 
 }  // namespace hydron
