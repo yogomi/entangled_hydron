@@ -73,6 +73,10 @@ class Hydron {
   void ExportStatus(FILE *file) const;
   void ShowStatus() const;
 
+  static common3d::BlockGrid NeighborSearcher() {
+    return neighbor_hydron_searcher_;
+  }
+
  private:
   HydronId id_;
   common3d::Vector head_direction_;

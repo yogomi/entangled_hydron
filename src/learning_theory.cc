@@ -2,6 +2,7 @@
 
 #include <memory>
 
+#include "./neighborhood_map.h"
 #include "./colony.h"
 #include "./hydron.h"
 #include "./random_number_generator.h"
@@ -37,6 +38,18 @@ Hydron FeedLearning::CreateHydron(
               , Random<float>(parameter->min_area_vertix.z()
                             , parameter->max_area_vertix.z()));
   return h;
+}
+
+HydronId FeedLearning::FindEasyToConnectHydron(const Hydron &hydron) {
+  common3d::BlockGrid neighbor_searcher = hydron.NeighborSearcher();
+  common3d::NeighborhoodMap neighbor_map =
+              neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
+
+  if (neighbor_map.size > 0) {
+    return hydron.Id();
+  } else {
+    return hydron.Id();
+  }
 }
 
 }  // namespace hydron

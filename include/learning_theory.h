@@ -43,6 +43,7 @@ class FeedLearning: public LearningTheory {
                 , std::shared_ptr<struct ColonyParameter> parameter);
   Hydron CreateHydron(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
+  HydronId FindEasyToConnectHydron(const Hydron &hydron);
 };
 
 }  // namespace hydron
