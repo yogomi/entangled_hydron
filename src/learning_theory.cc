@@ -1,7 +1,10 @@
 // Copyright 2014 Makoto Yano
 
 #include <memory>
+#include <functional>
 
+#include "./vector.h"
+#include "./math3d.h"
 #include "./neighborhood_map.h"
 #include "./colony.h"
 #include "./hydron.h"
@@ -18,8 +21,8 @@ void KeepCurrent::Learning(
 }
 
 Hydron KeepCurrent::CreateHydron(
-                std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter) {
+                const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+                , const std::shared_ptr<struct ColonyParameter> &parameter) {
   return Hydron(parameter->min_area_vertix);
 }
 
@@ -29,8 +32,8 @@ void FeedLearning::Learning(
 }
 
 Hydron FeedLearning::CreateHydron(
-                std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter) {
+              const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+              , const std::shared_ptr<struct ColonyParameter> &parameter) {
   Hydron h = Hydron(Random<float>(parameter->min_area_vertix.x()
                                 , parameter->max_area_vertix.x())
               , Random<float>(parameter->min_area_vertix.y()
@@ -40,14 +43,24 @@ Hydron FeedLearning::CreateHydron(
   return h;
 }
 
-HydronId FeedLearning::FindEasyToConnectHydron(const Hydron &hydron) {
+HydronId FeedLearning::FindEasyToConnectHydron(const Hydron &hydron
+            , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
   common3d::BlockGrid neighbor_searcher = hydron.NeighborSearcher();
   common3d::NeighborhoodMap neighbor_map =
               neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
 
-  if (neighbor_map.size > 0) {
+  std::function<bool(const common3d::Vector &)> ScaleFromRoundSlice =
+                      ScaleOfUnitBVectorFromPlanePathAVerticallyB(
+                                  hydron.Id(), hydron.HeadDirection());
+  if (neighbor_map.size() > 0) {
     return hydron.Id();
   } else {
+    common3d::NeighborhoodMap distance_map_in_colony;
+    common3d::Vector id = hydron.Id();
+    for (auto &h_info : *hydron_map) {
+      distance_map_in_colony[id.DistanceTo(h_info.first)].push_back(
+                                                            h_info.first);
+    }
     return hydron.Id();
   }
 }

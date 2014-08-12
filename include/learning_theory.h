@@ -16,11 +16,12 @@ class LearningTheory {
   LearningTheory() {}
   ~LearningTheory() {}
 
-  virtual void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                  , std::shared_ptr<struct ColonyParameter> parameter) = 0;
-  virtual Hydron CreateHydron(
+  virtual void Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                  , std::shared_ptr<struct ColonyParameter> parameter) = 0;
+                , std::shared_ptr<struct ColonyParameter> parameter) = 0;
+  virtual Hydron CreateHydron(
+                  const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+                , const std::shared_ptr<struct ColonyParameter> &parameter) = 0;
 };
 
 class KeepCurrent: public LearningTheory {
@@ -30,8 +31,9 @@ class KeepCurrent: public LearningTheory {
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
-  Hydron CreateHydron(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
+  Hydron CreateHydron(
+                  const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+                , const std::shared_ptr<struct ColonyParameter> &parameter);
 };
 
 class FeedLearning: public LearningTheory {
@@ -41,9 +43,11 @@ class FeedLearning: public LearningTheory {
 
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
-  Hydron CreateHydron(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
-  HydronId FindEasyToConnectHydron(const Hydron &hydron);
+  Hydron CreateHydron(
+                  const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+                , const std::shared_ptr<struct ColonyParameter> &parameter);
+  HydronId FindEasyToConnectHydron(const Hydron &hydron
+              , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
 };
 
 }  // namespace hydron

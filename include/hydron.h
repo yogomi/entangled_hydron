@@ -41,6 +41,9 @@ class Hydron {
 
   uint32_t ChangeId(const float x, const float y, const float z);
   void SetHeadDirection(const float x, const float y, const float z);
+  common3d::Vector HeadDirection() const {
+    return head_direction_;
+  }
 
   void SetParameter(const float temperature
                 , const float threshold
