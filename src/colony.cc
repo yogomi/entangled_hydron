@@ -206,7 +206,6 @@ int32_t Colony::ReadHydron_(FILE *file) {
   }
   Hydron h(v.x, v.y, v.z);
   fread(&v, sizeof(v), 1, file);
-  h.SetHeadDirection(v.x, v.y, v.z);
 
   fread(&hydron_parameter, sizeof(hydron_parameter), 1, file);
   h.SetParameter(hydron_parameter);

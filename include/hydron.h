@@ -40,10 +40,6 @@ class Hydron {
   void AdaptHeatEffect();
 
   uint32_t ChangeId(const float x, const float y, const float z);
-  void SetHeadDirection(const float x, const float y, const float z);
-  common3d::Vector HeadDirection() const {
-    return head_direction_;
-  }
 
   void SetParameter(const float temperature
                 , const float threshold
@@ -82,7 +78,6 @@ class Hydron {
 
  private:
   HydronId id_;
-  common3d::Vector head_direction_;
   struct HydronParameter parameter_;
   float temperature_buffer_;
   uint32_t refractory_period_;

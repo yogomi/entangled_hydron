@@ -57,10 +57,6 @@ HydronId FeedLearning::FindEasyToConnectHydron(const Hydron &hydron
   common3d::NeighborhoodMap neighbor_map =
               neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
 
-  std::function<bool(const common3d::Vector &)> ScaleFromRoundSlice =
-                      ScaleOfUnitBVectorFromPlanePathAVerticallyB(
-                                  hydron.Id(), hydron.HeadDirection());
-  printf("wowwwwwww!!_\n");
   if (neighbor_map.size() > 0) {
     return hydron.Id();
   } else {

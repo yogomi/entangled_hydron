@@ -14,25 +14,16 @@ namespace hydron {
 Hydron::Hydron()
   : id_(HydronId()) {
   SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
-  SetHeadDirection(Random<float>(-1.0f, 1.0f)
-                , Random<float>(-1.0f, 1.0f)
-                , Random<float>(-1.0f, 1.0f));
 }
 
 Hydron::Hydron(const float x, const float y, const float z)
   :id_(HydronId(x, y, z)) {
   SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
-  SetHeadDirection(Random<float>(-1.0f, 1.0f)
-                , Random<float>(-1.0f, 1.0f)
-                , Random<float>(-1.0f, 1.0f));
 }
 
 Hydron::Hydron(const HydronId &id)
   : id_(id) {
   SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
-  SetHeadDirection(Random<float>(-1.0f, 1.0f)
-                , Random<float>(-1.0f, 1.0f)
-                , Random<float>(-1.0f, 1.0f));
 }
 
 Hydron::~Hydron() {
@@ -96,11 +87,6 @@ uint32_t Hydron::ChangeId(const float x, const float y, const float z) {
   return 0;
 }
 
-void Hydron::SetHeadDirection(const float x, const float y, const float z) {
-  head_direction_ = common3d::Normalize(common3d::Vector(x, y, z));
-}
-
-
 void Hydron::SetParameter(const float temperature
                       , const float threshold
                       , const float strength
@@ -153,7 +139,6 @@ void Hydron::ExportStatus(FILE *file) const {
     ExportFloat(v.z());
   };
   ExportVector(id_);
-  ExportVector(head_direction_);
   fwrite(&parameter_, sizeof(parameter_), 1, file);
   uint64_t connecting_hydrons_count = connecting_hydrons_.size();
   fwrite(&connecting_hydrons_count, sizeof(connecting_hydrons_count), 1, file);
@@ -168,10 +153,6 @@ void Hydron::ExportStatus(FILE *file) const {
 
 void Hydron::ShowStatus() const {
   printf("ID: (%f, %f, %f); ", id_.x(), id_.y(), id_.z());
-  printf("Head Direction: (%f, %f, %f)"
-        , head_direction_.x()
-        , head_direction_.y()
-        , head_direction_.z());
   printf("temperatur: %f; ", parameter_.temperature);
   printf("temperatur_buffer: %f; ", temperature_buffer_);
   printf("threshold: %f; ", parameter_.threshold);
