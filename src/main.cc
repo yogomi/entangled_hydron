@@ -11,24 +11,29 @@
 #include "./learning_theory.h"
 
 using hydron::Colony;
+using hydron::AlliedColonies;
 using hydron::Hydron;
 using hydron::FeedLearning;
 
 Colony CreateColony2();
-Colony CreateColony();
+std::shared_ptr<Colony> CreateColony();
 
 int main() {
-  Colony colony = CreateColony();
-  colony.ShowHydronsStatus();
+  std::shared_ptr<Colony> colony = CreateColony();
+  AlliedColonies brain;
+  colony->ShowHydronsStatus();
   // colony.Save();
   printf("--------------------------------------");
   printf("--------------------------------------");
   printf("--------------------------------------");
   printf("--------------------------------------\n");
   std::shared_ptr<FeedLearning> feeding(new FeedLearning);
-  colony.SetLearningTheory(feeding);
-  std::map<common3d::Vector, Hydron> brain;
-  brain[common3d::Vector(3.0f, 3.0f, 3.0f)];
+  colony->SetLearningTheory(feeding);
+  brain.SetColony(colony);
+
+  while (true) {
+    brain.Beat();
+  }
 
   return 0;
 }
@@ -53,22 +58,22 @@ Colony CreateColony2() {
   return colony;
 }
 
-Colony CreateColony() {
-  Colony colony("test_colony");
-  colony.AddHydron(Hydron(2, 9, 3));
-  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
+std::shared_ptr<Colony> CreateColony() {
+  std::shared_ptr<Colony> colony(new Colony("test_colony"));
+  colony->AddHydron(Hydron(2, 9, 3));
+  colony->ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
                               , hydron::HydronId(5, 6, 2));
-  colony.AddHydron(Hydron(1, 3, 4));
-  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
+  colony->AddHydron(Hydron(1, 3, 4));
+  colony->ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
                               , hydron::HydronId(1, 3, 4));
-  colony.ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
+  colony->ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
                               , hydron::HydronId(5, 6, 2));
-  colony.AddHydron(Hydron(5, 6, 2));
-  colony.ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
+  colony->AddHydron(Hydron(5, 6, 2));
+  colony->ConnectHydronToHydron(hydron::HydronId(2, 9, 3)
                               , hydron::HydronId(5, 6, 2));
-  colony.ConnectHydronToHydron(hydron::HydronId(5, 6, 2)
+  colony->ConnectHydronToHydron(hydron::HydronId(5, 6, 2)
                               , hydron::HydronId(5, 6, 2));
-  colony.ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
+  colony->ConnectHydronToHydron(hydron::HydronId(1, 3, 4)
                               , hydron::HydronId(2, 9, 3));
   return colony;
 }

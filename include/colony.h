@@ -82,7 +82,7 @@ class Colony {
   void Initialize_() {
     parameter_->max_area_vertix = common3d::Vector(100.0f, 100.0f, 100.0f);
     parameter_->min_area_vertix = common3d::Vector(-100.0f, -100.0f, -100.0f);
-    parameter_->feed_capability = 100.0f;
+    parameter_->feed_capability = 1000000.0f;
     parameter_->food = 0.0f;
     parameter_->create_hydron_cost = 1000.0f;
     parameter_->threshold_density = 10000.0f;
@@ -103,7 +103,7 @@ class Colony {
 };
 
 class AlliedColonies {
- private:
+ public:
   AlliedColonies() {}
   ~AlliedColonies() {}
 

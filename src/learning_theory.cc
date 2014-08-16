@@ -13,7 +13,10 @@
 
 namespace hydron {
 
+/////////////////////////////////////////////////////////////////////////////
+// KeepCurrent learning theory
 // Do nothing.
+/////////////////////////////////////////////////////////////////////////////
 void KeepCurrent::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) {
@@ -24,6 +27,11 @@ Hydron KeepCurrent::CreateHydron(
                 const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyParameter> &parameter) {
   return Hydron(parameter->min_area_vertix);
+}
+
+HydronId KeepCurrent::FindEasyToConnectHydron(const Hydron &hydron
+            , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
+  return hydron.Id();
 }
 
 void FeedLearning::Learning(
@@ -52,6 +60,7 @@ HydronId FeedLearning::FindEasyToConnectHydron(const Hydron &hydron
   std::function<bool(const common3d::Vector &)> ScaleFromRoundSlice =
                       ScaleOfUnitBVectorFromPlanePathAVerticallyB(
                                   hydron.Id(), hydron.HeadDirection());
+  printf("wowwwwwww!!_\n");
   if (neighbor_map.size() > 0) {
     return hydron.Id();
   } else {
