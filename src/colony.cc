@@ -191,7 +191,6 @@ void Colony::Digest_() {
     printf("density = %f\n", density);
     parameter_->food -= parameter_->create_hydron_cost;
     Hydron h = learning_theory_->CreateHydron(hydron_map_, parameter_);
-    HydronId n = learning_theory_->FindEasyToConnectHydron(h, hydron_map_);
     AddHydron(h);
   }
 }

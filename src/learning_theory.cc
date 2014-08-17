@@ -17,6 +17,7 @@ namespace hydron {
 // KeepCurrent learning theory
 // Do nothing.
 /////////////////////////////////////////////////////////////////////////////
+
 void KeepCurrent::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) {
@@ -29,10 +30,9 @@ Hydron KeepCurrent::CreateHydron(
   return Hydron(parameter->min_area_vertix);
 }
 
-HydronId KeepCurrent::FindEasyToConnectHydron(const Hydron &hydron
-            , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
-  return hydron.Id();
-}
+/////////////////////////////////////////////////////////////////////////////
+// FeedLearning learning theory
+/////////////////////////////////////////////////////////////////////////////
 
 void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
@@ -51,7 +51,26 @@ Hydron FeedLearning::CreateHydron(
   return h;
 }
 
-HydronId FeedLearning::FindEasyToConnectHydron(const Hydron &hydron
+HydronId FeedLearning::CreateConnection_(const Hydron &hydron
+            , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
+  common3d::BlockGrid neighbor_searcher = hydron.NeighborSearcher();
+  common3d::NeighborhoodMap neighbor_map =
+              neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
+
+  if (neighbor_map.size() > 0) {
+    return hydron.Id();
+  } else {
+    common3d::NeighborhoodMap distance_map_in_colony;
+    common3d::Vector id = hydron.Id();
+    for (auto &h_info : *hydron_map) {
+      distance_map_in_colony[id.DistanceTo(h_info.first)].push_back(
+                                                            h_info.first);
+    }
+    return hydron.Id();
+  }
+}
+
+HydronId FeedLearning::CreateReverseConnection_(const Hydron &hydron
             , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
   common3d::BlockGrid neighbor_searcher = hydron.NeighborSearcher();
   common3d::NeighborhoodMap neighbor_map =

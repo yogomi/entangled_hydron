@@ -22,8 +22,6 @@ class LearningTheory {
   virtual Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyParameter> &parameter) = 0;
-  virtual HydronId FindEasyToConnectHydron(const Hydron &hydron
-          , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) = 0;
 };
 
 class KeepCurrent: public LearningTheory {
@@ -36,8 +34,6 @@ class KeepCurrent: public LearningTheory {
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyParameter> &parameter);
-  HydronId FindEasyToConnectHydron(const Hydron &hydron
-              , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
 };
 
 class FeedLearning: public LearningTheory {
@@ -50,7 +46,11 @@ class FeedLearning: public LearningTheory {
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyParameter> &parameter);
-  HydronId FindEasyToConnectHydron(const Hydron &hydron
+
+ private:
+  HydronId CreateConnection_(const Hydron &hydron
+              , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
+  HydronId CreateReverseConnection_(const Hydron &hydron
               , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
 };
 
