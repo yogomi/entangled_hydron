@@ -13,17 +13,17 @@ namespace hydron {
 
 Hydron::Hydron()
   : id_(HydronId()) {
-  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
+  SetParameter(0, 0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::Hydron(const float x, const float y, const float z)
   :id_(HydronId(x, y, z)) {
-  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
+  SetParameter(0, 0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::Hydron(const HydronId &id)
   : id_(id) {
-  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0);
+  SetParameter(0, 0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::~Hydron() {
@@ -51,7 +51,7 @@ void Hydron::Fire() {
           , FireNextHydron);
 
     parameter_.temperature = 0.0f;
-    refractory_period_ = parameter_.refractory_span;
+    parameter_.refractory_period = parameter_.refractory_span;
   }
 }
 
@@ -60,13 +60,13 @@ void Hydron::AddHeat(const float &heat) {
 }
 
 void Hydron::AdaptHeatEffect() {
-  if (refractory_period_ == 0) {
+  if (parameter_.refractory_period == 0) {
     parameter_.temperature =
       parameter_.temperature / parameter_.radiation_ability;
     parameter_.temperature += temperature_buffer_;
     temperature_buffer_ = 0.0f;
   } else {
-    --refractory_period_;
+    --(parameter_.refractory_period);
   }
 }
 
@@ -87,24 +87,26 @@ uint32_t Hydron::ChangeId(const float x, const float y, const float z) {
   return 0;
 }
 
-void Hydron::SetParameter(const float temperature
+void Hydron::SetParameter(const uint8_t flag
+                      , const float temperature
                       , const float threshold
                       , const float strength
                       , const float radiation_ability
-                      , const uint32_t refractory_span) {
+                      , const uint32_t refractory_span
+                      , const uint32_t refractory_period) {
+  parameter_.flag = flag;
   parameter_.temperature = temperature;
   parameter_.threshold = threshold;
   parameter_.strength = strength;
   parameter_.radiation_ability = radiation_ability;
   parameter_.refractory_span = refractory_span;
+  parameter_.refractory_period = refractory_period;
   temperature_buffer_ = 0;
-  refractory_period_ = 0;
 }
 
 void Hydron::SetParameter(const struct HydronParameter &parameter) {
   parameter_ = parameter;
   temperature_buffer_ = 0;
-  refractory_period_ = 0;
 }
 
 void Hydron::ConnectTo(const float x
@@ -159,7 +161,7 @@ void Hydron::ShowStatus() const {
   printf("strength: %f; ", parameter_.strength);
   printf("radiation ability: %f; ", parameter_.radiation_ability);
   printf("refractory span: %d; ", parameter_.refractory_span);
-  printf("refractory period: %d; ", refractory_period_);
+  printf("refractory period: %d; ", parameter_.refractory_period);
   printf("connectiong hydron count: %" PRIuS "; ", connecting_hydrons_.size());
   printf("connecting hydron ids: ");
   std::for_each(connecting_hydrons_.begin()

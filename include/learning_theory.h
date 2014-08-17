@@ -21,7 +21,7 @@ class LearningTheory {
                 , std::shared_ptr<struct ColonyParameter> parameter) = 0;
   virtual Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , const std::shared_ptr<struct ColonyParameter> &parameter) = 0;
+                , std::shared_ptr<struct ColonyParameter> parameter) = 0;
 };
 
 class KeepCurrent: public LearningTheory {
@@ -33,7 +33,7 @@ class KeepCurrent: public LearningTheory {
                 , std::shared_ptr<struct ColonyParameter> parameter);
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , const std::shared_ptr<struct ColonyParameter> &parameter);
+                , std::shared_ptr<struct ColonyParameter> parameter);
 };
 
 class FeedLearning: public LearningTheory {
@@ -45,12 +45,12 @@ class FeedLearning: public LearningTheory {
                 , std::shared_ptr<struct ColonyParameter> parameter);
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , const std::shared_ptr<struct ColonyParameter> &parameter);
+                , std::shared_ptr<struct ColonyParameter> parameter);
 
  private:
-  HydronId CreateConnection_(const Hydron &hydron
+  float CreateConnection_(const Hydron &hydron
               , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
-  HydronId CreateReverseConnection_(const Hydron &hydron
+  float CreateReverseConnection_(const Hydron &hydron
               , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
 };
 

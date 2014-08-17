@@ -189,7 +189,6 @@ void Colony::Digest_() {
   float density = parameter_->food / volume;
   if (density > parameter_->threshold_density) {
     printf("density = %f\n", density);
-    parameter_->food -= parameter_->create_hydron_cost;
     Hydron h = learning_theory_->CreateHydron(hydron_map_, parameter_);
     AddHydron(h);
   }
