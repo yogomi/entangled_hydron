@@ -55,9 +55,7 @@ Hydron FeedLearning::CreateHydron(
   float create_connection_cost;
 
   do {
-    create_connection_cost = 0;
-    create_connection_cost += CreateConnection_(h, hydron_map);
-    create_connection_cost += CreateReverseConnection_(h, hydron_map);
+    create_connection_cost = CreateConnection_(h, hydron_map);
     create_connection_energy -= create_connection_cost;
   } while (create_connection_energy > 0 && create_connection_cost != 0);
   return h;
@@ -72,33 +70,6 @@ float FeedLearning::CreateConnection_(const Hydron &hydron
   if (neighbor_map.size() > 0) {
     return 0.0f;
   } else {
-    common3d::NeighborhoodMap distance_map_in_colony;
-    common3d::Vector id = hydron.Id();
-    for (auto &h_info : *hydron_map) {
-      distance_map_in_colony[id.DistanceTo(h_info.first)].push_back(
-                                                            h_info.first);
-    }
-    return 0.0f;
-  }
-}
-
-float FeedLearning::CreateReverseConnection_(const Hydron &hydron
-            , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
-  common3d::BlockGrid neighbor_searcher = Hydron::NeighborSearcher();
-  common3d::NeighborhoodMap neighbor_map =
-              neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
-
-  if (neighbor_map.size() > 0) {
-    for (auto &hydron_map : neighbor_map) {
-      for (auto &id : hydron_map.second) {
-        struct HydronParameter p = Hydron::GetSpecifiedHydronParameter(id);
-        if (p.IsValid()) {
-        }
-      }
-    }
-    return 0.0f;
-  }
-  {
     common3d::NeighborhoodMap distance_map_in_colony;
     common3d::Vector id = hydron.Id();
     for (auto &h_info : *hydron_map) {

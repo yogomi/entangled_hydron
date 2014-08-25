@@ -50,8 +50,6 @@ class FeedLearning: public LearningTheory {
  private:
   float CreateConnection_(const Hydron &hydron
               , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
-  float CreateReverseConnection_(const Hydron &hydron
-              , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
 };
 
 }  // namespace hydron

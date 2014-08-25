@@ -3,6 +3,7 @@
 #ifndef INCLUDE_HYDRON_H_
 #define INCLUDE_HYDRON_H_
 
+#include <boost/optional.hpp>
 #include <cstdint>
 #include <list>
 #include <map>
@@ -16,22 +17,12 @@ typedef common3d::Vector HydronId;
 typedef std::list<HydronId> HydronIdList;
 
 struct HydronParameter {
-  uint8_t flag;
   float temperature;
   float threshold;
   float strength;
   float radiation_ability;
   uint32_t refractory_span;
   uint32_t refractory_period;
-
-  void SetNotValid() {
-    flag = flag | 0x01;
-  }
-  bool IsValid() {
-    uint8_t tmp = flag ^ 0xFE;
-    tmp = ~tmp;
-    return tmp > 0;
-  }
 };
 
 struct HydronConnection {
@@ -52,8 +43,7 @@ class Hydron {
 
   uint32_t ChangeId(const float x, const float y, const float z);
 
-  void SetParameter(const uint8_t flag
-                , const float temperature
+  void SetParameter(const float temperature
                 , const float threshold
                 , const float strength
                 , const float radiation_ability
@@ -89,11 +79,10 @@ class Hydron {
     return neighbor_hydron_searcher_;
   }
 
-  static struct HydronParameter GetSpecifiedHydronParameter(HydronId id) {
+  static boost::optional<struct HydronParameter>
+                      GetSpecifiedHydronParameter(HydronId id) {
     if (all_hydron_map_.find(id) == all_hydron_map_.end()) {
-      struct HydronParameter p;
-      p.SetNotValid();
-      return p;
+      return boost::none;
     }
     return all_hydron_map_[id]->Parameter();
   }

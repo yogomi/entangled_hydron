@@ -13,17 +13,17 @@ namespace hydron {
 
 Hydron::Hydron()
   : id_(HydronId()) {
-  SetParameter(0, 0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
+  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::Hydron(const float x, const float y, const float z)
   :id_(HydronId(x, y, z)) {
-  SetParameter(0, 0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
+  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::Hydron(const HydronId &id)
   : id_(id) {
-  SetParameter(0, 0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
+  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::~Hydron() {
@@ -87,14 +87,12 @@ uint32_t Hydron::ChangeId(const float x, const float y, const float z) {
   return 0;
 }
 
-void Hydron::SetParameter(const uint8_t flag
-                      , const float temperature
+void Hydron::SetParameter(const float temperature
                       , const float threshold
                       , const float strength
                       , const float radiation_ability
                       , const uint32_t refractory_span
                       , const uint32_t refractory_period) {
-  parameter_.flag = flag;
   parameter_.temperature = temperature;
   parameter_.threshold = threshold;
   parameter_.strength = strength;
