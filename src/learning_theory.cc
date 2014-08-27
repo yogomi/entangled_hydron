@@ -57,7 +57,7 @@ Hydron FeedLearning::CreateHydron(
   do {
     create_connection_cost = CreateConnection_(h, hydron_map);
     create_connection_energy -= create_connection_cost;
-  } while (create_connection_energy > 0 && create_connection_cost != 0);
+  } while (create_connection_energy > 0.0f && create_connection_cost != 0.0f);
   return h;
 }
 
@@ -72,9 +72,12 @@ float FeedLearning::CreateConnection_(const Hydron &hydron
   } else {
     common3d::NeighborhoodMap distance_map_in_colony;
     common3d::Vector id = hydron.Id();
-    for (auto &h_info : *hydron_map) {
-      distance_map_in_colony[id.DistanceTo(h_info.first)].push_back(
-                                                            h_info.first);
+    std::map<HydronId, Hydron>::iterator iter;
+    for (int32_t i = 0; i < 10000; i++) {
+      iter = hydron_map->begin();
+      std::advance(iter, Random<uint64_t>(0, hydron_map->size()));
+      distance_map_in_colony[id.DistanceTo(iter->first)].push_back(
+                                                          iter->first);
     }
     return 0.0f;
   }
