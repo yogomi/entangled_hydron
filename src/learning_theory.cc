@@ -53,16 +53,17 @@ Hydron FeedLearning::CreateHydron(
   parameter->food -= parameter->create_hydron_cost;
 
   float create_connection_energy = parameter->create_hydron_cost;
-  float create_connection_cost;
+  boost::optional<float> create_connection_cost;
 
-  do {
+  while (create_connection_energy > 0.0f) {
     create_connection_cost = CreateConnection_(h, hydron_map);
-    create_connection_energy -= create_connection_cost;
-  } while (create_connection_energy > 0.0f && create_connection_cost != 0.0f);
+    if (!create_connection_cost) break;
+    create_connection_energy -= *create_connection_cost;
+  }
   return h;
 }
 
-float FeedLearning::CreateConnection_(Hydron &hydron
+boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
             , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
   common3d::BlockGrid neighbor_searcher = hydron.NeighborSearcher();
   common3d::NeighborhoodMap neighbor_map =
@@ -109,7 +110,7 @@ float FeedLearning::CreateConnection_(Hydron &hydron
     return id->DistanceTo(hydron.Id());
   }
 
-  return 0.0f;
+  return boost::none;
 }
 
 }  // namespace hydron
