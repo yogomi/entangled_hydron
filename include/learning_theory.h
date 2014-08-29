@@ -48,7 +48,7 @@ class FeedLearning: public LearningTheory {
                 , std::shared_ptr<struct ColonyParameter> parameter);
 
  private:
-  float CreateConnection_(const Hydron &hydron
+  float CreateConnection_(Hydron &hydron
               , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
 };
 
