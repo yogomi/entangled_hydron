@@ -67,9 +67,19 @@ float FeedLearning::CreateConnection_(const Hydron &hydron
   common3d::NeighborhoodMap neighbor_map =
               neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
 
-  if (neighbor_map.size() > 0) {
-    return 0.0f;
-  } else {
+  HydronConnections connections = hydron.ConnectingHydrons();
+
+  for (auto DistanceInfo : neighbor_map) {
+    for (const HydronId &id : DistanceInfo.second) {
+      if (connections.find(id) != connections.end()) continue;
+      MaybeHydronParameter param = Hydron::GetSpecifiedHydronParameter(id)
+      if (param && param.temperature < (param.threshold / 2)) {
+        hydron.ConnectTo(id);
+        return id.DistanceTo(hydron.Id);
+      }
+    }
+  }
+  {
     common3d::NeighborhoodMap distance_map_in_colony;
     common3d::Vector id = hydron.Id();
     std::map<HydronId, Hydron>::iterator iter;

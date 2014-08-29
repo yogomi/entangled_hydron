@@ -40,15 +40,11 @@ void Hydron::RegisterToAllHydronMap() {
 
 void Hydron::Fire() {
   if (parameter_.temperature > parameter_.threshold) {
-    auto FireNextHydron =
-      [](const struct HydronConnection &connection) -> void {
-      if (all_hydron_map_.find(connection.id) != all_hydron_map_.end()) {
-        all_hydron_map_[connection.id]->AddHeat(connection.weight);
+    for (const auto &connection : connecting_hydrons_) {
+      if (all_hydron_map_.find(connection.first) != all_hydron_map_.end()) {
+        all_hydron_map_[connection.first]->AddHeat(connection.second);
       }
-    };
-    for_each(connecting_hydrons_.begin()
-          , connecting_hydrons_.end()
-          , FireNextHydron);
+    }
 
     parameter_.temperature = 0.0f;
     parameter_.refractory_period = parameter_.refractory_span;
@@ -115,17 +111,14 @@ void Hydron::ConnectTo(const float x
 }
 
 void Hydron::ConnectTo(const HydronId &id, const float weight) {
-  struct HydronConnection next_hydron;
-  next_hydron.id = id;
-  next_hydron.weight = weight;
-  connecting_hydrons_.push_back(next_hydron);
+  connecting_hydrons_[id] = weight;
 }
 
 void Hydron::ConnectTo(const Hydron &h, const float weight) {
   ConnectTo(h.Id(), weight);
 }
 
-std::list<struct HydronConnection> Hydron::ConnectingHydrons() const {
+HydronConnections Hydron::ConnectingHydrons() const {
   return connecting_hydrons_;
 }
 
@@ -142,13 +135,10 @@ void Hydron::ExportStatus(FILE *file) const {
   fwrite(&parameter_, sizeof(parameter_), 1, file);
   uint64_t connecting_hydrons_count = connecting_hydrons_.size();
   fwrite(&connecting_hydrons_count, sizeof(connecting_hydrons_count), 1, file);
-  std::for_each(connecting_hydrons_.begin()
-              , connecting_hydrons_.end()
-              , [&ExportVector, &ExportFloat](
-                const struct HydronConnection &hydron_connect) {
-    ExportVector(hydron_connect.id);
-    ExportFloat(hydron_connect.weight);
-  });
+  for (const auto &hydron_connect : connecting_hydrons_) {
+    ExportVector(hydron_connect.first);
+    ExportFloat(hydron_connect.second);
+  }
 }
 
 void Hydron::ShowStatus() const {
@@ -162,13 +152,11 @@ void Hydron::ShowStatus() const {
   printf("refractory period: %d; ", parameter_.refractory_period);
   printf("connectiong hydron count: %" PRIuS "; ", connecting_hydrons_.size());
   printf("connecting hydron ids: ");
-  std::for_each(connecting_hydrons_.begin()
-              , connecting_hydrons_.end()
-              , [](const struct HydronConnection &hydron_connect) {
-    HydronId id = hydron_connect.id;
+  for (const auto &hydron_connect : connecting_hydrons_) {
+    HydronId id = hydron_connect.first;
     printf("(%f, %f, %f) ", id.x(), id.y(), id.z());
-    printf("weight: %f; ", hydron_connect.weight);
-  });
+    printf("weight: %f; ", hydron_connect.second);
+  }
   printf("\n");
 }
 

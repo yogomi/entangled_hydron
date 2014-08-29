@@ -25,10 +25,8 @@ struct HydronParameter {
   uint32_t refractory_period;
 };
 
-struct HydronConnection {
-  HydronId id;
-  float weight;
-};
+typedef boost::optional<struct HydronParameter> MaybeHydronParameter;
+typedef std::map<HydronId, float> HydronConnections;
 
 class Hydron {
  public:
@@ -63,7 +61,7 @@ class Hydron {
   void ConnectTo(const HydronId &id, const float weight = 1);
   void ConnectTo(const Hydron& h, const float weight = 1);
 
-  std::list<struct HydronConnection> ConnectingHydrons() const;
+  HydronConnections ConnectingHydrons() const;
 
   HydronId Id() const {
     return id_;
@@ -79,8 +77,7 @@ class Hydron {
     return neighbor_hydron_searcher_;
   }
 
-  static boost::optional<struct HydronParameter>
-                      GetSpecifiedHydronParameter(HydronId id) {
+  static MaybeHydronParameter GetSpecifiedHydronParameter(const HydronId &id) {
     if (all_hydron_map_.find(id) == all_hydron_map_.end()) {
       return boost::none;
     }
@@ -91,7 +88,7 @@ class Hydron {
   HydronId id_;
   struct HydronParameter parameter_;
   float temperature_buffer_;
-  std::list<struct HydronConnection> connecting_hydrons_;
+  HydronConnections connecting_hydrons_;
   static std::map<HydronId, Hydron *> all_hydron_map_;
   static common3d::BlockGrid neighbor_hydron_searcher_;
 };

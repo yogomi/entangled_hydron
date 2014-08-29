@@ -70,11 +70,10 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
   colony_signpost_[hydron.Id()] = this;
   (*hydron_map_)[hydron.Id()].RegisterToAllHydronMap();
 
-  std::list<HydronConnection> connecting_hydrons = hydron.ConnectingHydrons();
-  for_each(connecting_hydrons.begin(), connecting_hydrons.end()
-          , [&hydron](const HydronConnection &connection) {
-    connection_reverse_map_[connection.id].push_back(hydron.Id());
-  });
+  HydronConnections connecting_hydrons = hydron.ConnectingHydrons();
+  for (const auto &connection : connecting_hydrons) {
+    connection_reverse_map_[connection.first].push_back(hydron.Id());
+  }
 
   return 0;
 }
