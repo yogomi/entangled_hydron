@@ -19,9 +19,8 @@ Colony CreateColony2();
 std::shared_ptr<Colony> CreateColony();
 
 int main() {
-  std::shared_ptr<Colony> colony = CreateColony();
+  std::shared_ptr<Colony> colony(new Colony("test"));
   AlliedColonies brain;
-  colony->ShowHydronsStatus();
   // colony.Save();
   printf("--------------------------------------");
   printf("--------------------------------------");
@@ -31,8 +30,14 @@ int main() {
   colony->SetLearningTheory(feeding);
   brain.SetColony(colony);
 
+  int i = 0;
   while (true) {
     brain.Beat();
+    if (i > 100) {
+      colony->ShowHydronsStatus();
+      i = 0;
+    }
+    i++;
   }
 
   return 0;

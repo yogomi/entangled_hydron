@@ -65,10 +65,6 @@ Hydron FeedLearning::CreateHydron(
 
 boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
             , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
-  common3d::BlockGrid neighbor_searcher = hydron.NeighborSearcher();
-  common3d::NeighborhoodMap neighbor_map =
-              neighbor_searcher.GetNeighborsDistanceMap(hydron.Id());
-
 
   auto ConnectableHydronIdInNeighborMap = [&hydron](
       const common3d::NeighborhoodMap &neighbors) -> boost::optional<HydronId> {
@@ -86,25 +82,18 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
     return boost::none;
   };
 
-  // Find neaby cold connectable hydron.
-  boost::optional<HydronId> id = ConnectableHydronIdInNeighborMap(neighbor_map);
-  if (id) {
-    hydron.ConnectTo(*id);
-    return id->DistanceTo(hydron.Id());
-  }
-
   // Create far distance map.
   common3d::NeighborhoodMap distance_map_in_colony;
   HydronId self_id = hydron.Id();
   std::map<HydronId, Hydron>::iterator iter;
-  for (int32_t i = 0; i < 10000; i++) {
-    iter = hydron_map->begin();
-    std::advance(iter, Random<uint64_t>(0, hydron_map->size()));
-    distance_map_in_colony[self_id.DistanceTo(iter->first)].push_back(
-                                                        iter->first);
+  for (auto const &h : *hydron_map) {
+    distance_map_in_colony[self_id.DistanceTo(h.first)].push_back(
+                                                        h.first);
   }
-  // Find far cold connectable hydron.
-  id = ConnectableHydronIdInNeighborMap(distance_map_in_colony);
+  // Find cold connectable hydron.
+  boost::optional<HydronId> id
+    = ConnectableHydronIdInNeighborMap(distance_map_in_colony);
+
   if (id) {
     hydron.ConnectTo(*id);
     return id->DistanceTo(hydron.Id());
