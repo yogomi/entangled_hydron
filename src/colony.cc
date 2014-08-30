@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <cstdio>
 
+#include "x64_x32/format_type.h"
 #include "./vector.h"
 #include "./cube.h"
 #include "./hydron.h"
@@ -134,6 +135,7 @@ void Colony::ShowHydronsStatus() const {
   for (auto& h : *hydron_map_) {
     h.second.ShowStatus();
   }
+  printf("hydron amount = %" PRIuS "\n", hydron_map_->size());
 }
 
 void Colony::ShowSignpostInformation() const {
