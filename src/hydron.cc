@@ -13,17 +13,17 @@ namespace hydron {
 
 Hydron::Hydron()
   : id_(HydronId()) {
-  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
+  SetParameter(0.0f, 1.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::Hydron(const float x, const float y, const float z)
   :id_(HydronId(x, y, z)) {
-  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
+  SetParameter(0.0f, 1.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::Hydron(const HydronId &id)
   : id_(id) {
-  SetParameter(0.0f, 0.0f, 1.0f, 1.0f, 0, 0);
+  SetParameter(0.0f, 1.0f, 1.0f, 1.0f, 0, 0);
 }
 
 Hydron::~Hydron() {

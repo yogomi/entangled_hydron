@@ -65,7 +65,6 @@ Hydron FeedLearning::CreateHydron(
 
 boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
             , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
-
   auto ConnectableHydronIdInNeighborMap = [&hydron](
       const common3d::NeighborhoodMap &neighbors) -> boost::optional<HydronId> {
     HydronConnections connections = hydron.ConnectingHydrons();
