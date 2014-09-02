@@ -29,12 +29,15 @@ int main() {
   std::shared_ptr<FeedLearning> feeding(new FeedLearning);
   colony->SetLearningTheory(feeding);
   brain.SetColony(colony);
+  colony->Load();
 
+      return 0;
   int i = 0;
   while (true) {
     brain.Beat();
-    if (i > 100) {
+    if (i > 5000) {
       colony->ShowHydronsStatus();
+      colony->Save();
       i = 0;
     }
     i++;

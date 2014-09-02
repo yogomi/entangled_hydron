@@ -104,7 +104,8 @@ void Colony::Save() const {
       std::fopen(FileName_().data() , "wb"));
 
   uint64_t header[2] = {0, 0};
-  fwrite(header, sizeof(header), 1, file.get());
+  fwrite(header, sizeof(uint64_t), 2, file.get());
+  ExportParameter_(file.get());
   for (const auto& h : *hydron_map_) {
     h.second.ExportStatus(file.get());
   }
@@ -119,8 +120,14 @@ void Colony::Load() {
     return;
   }
   uint64_t header[2];
-  fread(header, sizeof(header), 1, file.get());
+  fread(header, sizeof(uint64_t), 2, file.get());
+  ImportParameter_(file.get());
 
+  printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
+      , parameter_->feed_capability
+      , parameter_->food
+      , parameter_->create_hydron_cost
+      , parameter_->threshold_density);
   while (ReadHydron_(file.get()) == 0) {}
 }
 
@@ -195,6 +202,47 @@ void Colony::Digest_() {
   }
 }
 
+void Colony::ExportParameter_(FILE *file) const {
+  auto ExportFloat = [&file](const float value) -> void {
+    fwrite(&value, sizeof(value), 1, file);
+  };
+  auto ExportVector = [&file, &ExportFloat](const common3d::Vector &v) -> void {
+    ExportFloat(v.x());
+    ExportFloat(v.y());
+    ExportFloat(v.z());
+  };
+  ExportVector(parameter_->max_area_vertix);
+  ExportVector(parameter_->min_area_vertix);
+  ExportFloat(parameter_->feed_capability);
+  ExportFloat(parameter_->food);
+  ExportFloat(parameter_->create_hydron_cost);
+  ExportFloat(parameter_->threshold_density);
+}
+
+void Colony::ImportParameter_(FILE *file) {
+  struct common3d::MinimumElementVector v;
+  fread(&v, sizeof(v), 1, file);
+  parameter_->max_area_vertix = common3d::Vector(v.x, v.y, v.z);
+  fread(&v, sizeof(v), 1, file);
+  parameter_->min_area_vertix = common3d::Vector(v.x, v.y, v.z);
+  fread(&(parameter_->feed_capability)
+      , sizeof(parameter_->feed_capability)
+      , 1
+      , file);
+  fread(&(parameter_->food)
+      , sizeof(parameter_->food)
+      , 1
+      , file);
+  fread(&(parameter_->create_hydron_cost)
+      , sizeof(parameter_->create_hydron_cost)
+      , 1
+      , file);
+  fread(&(parameter_->threshold_density)
+      , sizeof(parameter_->threshold_density)
+      , 1
+      , file);
+}
+
 int32_t Colony::ReadHydron_(FILE *file) {
   struct common3d::MinimumElementVector v;
   struct HydronParameter hydron_parameter;
@@ -204,7 +252,6 @@ int32_t Colony::ReadHydron_(FILE *file) {
     return -1;
   }
   Hydron h(v.x, v.y, v.z);
-  fread(&v, sizeof(v), 1, file);
 
   fread(&hydron_parameter, sizeof(hydron_parameter), 1, file);
   h.SetParameter(hydron_parameter);

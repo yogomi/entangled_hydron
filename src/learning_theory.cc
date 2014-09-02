@@ -39,11 +39,14 @@ Hydron KeepCurrent::CreateHydron(
 void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) {
+  parameter->food -= hydron_map->size();
+  float surplus_food = parameter->food / hydron_map->size();
 }
 
 Hydron FeedLearning::CreateHydron(
               const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
               , std::shared_ptr<struct ColonyParameter> parameter) {
+  printf("CreateHydron Start\n");
   Hydron h = Hydron(Random<float>(parameter->min_area_vertix.x()
                                 , parameter->max_area_vertix.x())
               , Random<float>(parameter->min_area_vertix.y()
@@ -60,6 +63,7 @@ Hydron FeedLearning::CreateHydron(
     if (!create_connection_cost) break;
     create_connection_energy -= *create_connection_cost;
   }
+  printf("CreateHydron End\n");
   return h;
 }
 

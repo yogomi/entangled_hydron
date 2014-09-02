@@ -63,7 +63,7 @@ class Colony {
 
   // Clear all Hydrons and read file and set new Hydrons.
   // Filename is colony_name_ + .bin.
-  // If could not open file, remain empty Hydron list.
+  // If it could not open the file, remain empty Hydron list.
   void Load();
 
   static Colony* GetAffiliatedColony(const HydronId id);
@@ -90,6 +90,8 @@ class Colony {
   void Feeding_();
   void Digest_();
 
+  void ExportParameter_(FILE *file) const;
+  void ImportParameter_(FILE *file);
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 
