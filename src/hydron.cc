@@ -27,7 +27,8 @@ Hydron::Hydron(const HydronId &id)
 }
 
 Hydron::~Hydron() {
-  if (all_hydron_map_[id_] == this) {
+  auto it = all_hydron_map_.find(id_);
+  if (it != all_hydron_map_.end() && it->second == this) {
     all_hydron_map_.erase(id_);
     neighbor_hydron_searcher_.RemoveVector(id_);
   }
@@ -41,9 +42,8 @@ void Hydron::RegisterToAllHydronMap() {
 void Hydron::Fire() {
   if (parameter_.temperature > parameter_.threshold) {
     for (const auto &connection : connecting_hydrons_) {
-      auto it = all_hydron_map_.find(connection.first);
-      if (it != all_hydron_map_.end()) {
-        it->second->AddHeat(connection.second);
+      if (all_hydron_map_.find(connection.first) != all_hydron_map_.end()) {
+        all_hydron_map_[connection.first]->AddHeat(connection.second);
       }
     }
 
