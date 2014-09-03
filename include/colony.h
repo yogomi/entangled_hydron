@@ -82,10 +82,10 @@ class Colony {
   void Initialize_() {
     parameter_->max_area_vertix = common3d::Vector(100.0f, 100.0f, 100.0f);
     parameter_->min_area_vertix = common3d::Vector(-100.0f, -100.0f, -100.0f);
-    parameter_->feed_capability = 10000.0f;
+    parameter_->feed_capability = 100000000.0f;
     parameter_->food = 0.0f;
     parameter_->create_hydron_cost = 1000.0f;
-    parameter_->threshold_density = 10000.0f;
+    parameter_->threshold_density = 10.0f;
   }
   void Feeding_();
   void Digest_();

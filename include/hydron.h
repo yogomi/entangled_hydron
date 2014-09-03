@@ -78,10 +78,11 @@ class Hydron {
   }
 
   static MaybeHydronParameter GetSpecifiedHydronParameter(const HydronId &id) {
-    if (all_hydron_map_.find(id) == all_hydron_map_.end()) {
+    auto it = all_hydron_map_.find(id);
+    if (it == all_hydron_map_.end()) {
       return boost::none;
     }
-    return all_hydron_map_[id]->Parameter();
+    return it->second->Parameter();
   }
 
  private:

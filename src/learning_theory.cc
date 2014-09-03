@@ -97,7 +97,7 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
 
   if (id) {
     hydron.ConnectTo(*id);
-    return id->DistanceTo(hydron.Id());
+    return boost::optional<float>(id->DistanceTo(hydron.Id()));
   }
 
   return boost::none;

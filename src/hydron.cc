@@ -41,8 +41,9 @@ void Hydron::RegisterToAllHydronMap() {
 void Hydron::Fire() {
   if (parameter_.temperature > parameter_.threshold) {
     for (const auto &connection : connecting_hydrons_) {
-      if (all_hydron_map_.find(connection.first) != all_hydron_map_.end()) {
-        all_hydron_map_[connection.first]->AddHeat(connection.second);
+      auto it = all_hydron_map_.find(connection.first);
+      if (it != all_hydron_map_.end()) {
+        it->second->AddHeat(connection.second);
       }
     }
 
