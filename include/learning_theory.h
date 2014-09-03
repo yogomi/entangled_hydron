@@ -50,7 +50,7 @@ class FeedLearning: public LearningTheory {
 
  private:
   boost::optional<float> CreateConnection_(Hydron &hydron
-              , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map);
+              , const common3d::NeighborhoodMap &distance_map_in_colony);
 };
 
 }  // namespace hydron

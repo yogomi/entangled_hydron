@@ -46,29 +46,33 @@ void FeedLearning::Learning(
 Hydron FeedLearning::CreateHydron(
               const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
               , std::shared_ptr<struct ColonyParameter> parameter) {
-  printf("CreateHydron Start\n");
   Hydron h = Hydron(Random<float>(parameter->min_area_vertix.x()
                                 , parameter->max_area_vertix.x())
               , Random<float>(parameter->min_area_vertix.y()
                             , parameter->max_area_vertix.y())
               , Random<float>(parameter->min_area_vertix.z()
                             , parameter->max_area_vertix.z()));
+  HydronId self_id = h.Id();
   parameter->food -= parameter->create_hydron_cost;
 
   float create_connection_energy = parameter->create_hydron_cost;
   boost::optional<float> create_connection_cost;
 
+  common3d::NeighborhoodMap distance_map_in_colony;
+  for (auto const &hydron_info : *hydron_map) {
+    distance_map_in_colony[self_id.DistanceTo(hydron_info.first)].push_back(
+                                                      hydron_info.first);
+  }
   while (create_connection_energy > 0.0f) {
-    create_connection_cost = CreateConnection_(h, hydron_map);
+    create_connection_cost = CreateConnection_(h, distance_map_in_colony);
     if (!create_connection_cost) break;
     create_connection_energy -= *create_connection_cost;
   }
-  printf("CreateHydron End\n");
   return h;
 }
 
 boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
-            , const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map) {
+            , const common3d::NeighborhoodMap &distance_map_in_colony) {
   auto ConnectableHydronIdInNeighborMap = [&hydron](
       const common3d::NeighborhoodMap &neighbors) -> boost::optional<HydronId> {
     HydronConnections connections = hydron.ConnectingHydrons();
@@ -86,13 +90,7 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
   };
 
   // Create far distance map.
-  common3d::NeighborhoodMap distance_map_in_colony;
-  HydronId self_id = hydron.Id();
   std::map<HydronId, Hydron>::iterator iter;
-  for (auto const &h : *hydron_map) {
-    distance_map_in_colony[self_id.DistanceTo(h.first)].push_back(
-                                                        h.first);
-  }
   // Find cold connectable hydron.
   boost::optional<HydronId> id
     = ConnectableHydronIdInNeighborMap(distance_map_in_colony);
