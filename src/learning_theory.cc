@@ -76,7 +76,7 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
   auto ConnectableHydronIdInNeighborMap = [&hydron](
       const common3d::NeighborhoodMap &neighbors) -> boost::optional<HydronId> {
     HydronConnections connections = hydron.ConnectingHydrons();
-    for (auto DistanceInfo : neighbors) {
+    for (auto &DistanceInfo : neighbors) {
       for (const HydronId &id : DistanceInfo.second) {
         if (connections.find(id) != connections.end()) continue;
         if (id == hydron.Id()) continue;
