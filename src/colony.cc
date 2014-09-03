@@ -256,9 +256,9 @@ int32_t Colony::ReadHydron_(FILE *file) {
   fread(&hydron_parameter, sizeof(hydron_parameter), 1, file);
   h.SetParameter(hydron_parameter);
 
-  fread(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
   AddHydron(h);
 
+  fread(&connecting_hydron_count, sizeof(connecting_hydron_count), 1, file);
   for (uint64_t i = 0; i < connecting_hydron_count; ++i) {
     float weight;
     fread(&v, sizeof(v), 1, file);
