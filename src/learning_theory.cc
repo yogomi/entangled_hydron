@@ -14,6 +14,18 @@
 
 namespace hydron {
 
+std::shared_ptr<LearningTheory> LearningTheoryCreator(
+                          const LearningTheoryType &learning_theory_type) {
+  switch (learning_theory_type) {
+    case keep_current:
+      return std::shared_ptr<LearningTheory>(new KeepCurrent);
+    case feed_learning:
+      return std::shared_ptr<LearningTheory>(new FeedLearning);
+    default:
+      return nullptr;
+  }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // KeepCurrent learning theory
 // Do nothing.
