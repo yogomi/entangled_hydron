@@ -13,7 +13,7 @@
 using hydron::Colony;
 using hydron::AlliedColonies;
 using hydron::Hydron;
-using hydron::FeedLearning;
+using hydron::LearningTheory;
 
 Colony CreateColony2();
 std::shared_ptr<Colony> CreateColony();
@@ -26,7 +26,8 @@ int main() {
   printf("--------------------------------------");
   printf("--------------------------------------");
   printf("--------------------------------------\n");
-  std::shared_ptr<FeedLearning> feeding(new FeedLearning);
+  std::shared_ptr<LearningTheory> feeding =
+                CreateLearningTheory(hydron::FEED_LEARNING);
   colony->SetLearningTheory(feeding);
   brain.SetColony(colony);
   colony->Load();

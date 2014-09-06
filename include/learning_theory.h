@@ -12,9 +12,9 @@
 
 namespace hydron {
 
-enum LearningTheoryType {
-  keep_current = 0
-  , feed_learning = 1
+enum LTType {
+  KEEP_CURRENT = 0
+  , FEED_LEARNING = 1
 };
 
 class LearningTheory {
@@ -42,7 +42,8 @@ class KeepCurrent: public LearningTheory {
                 , std::shared_ptr<struct ColonyParameter> parameter);
 };
 
-std::shared_ptr<LearningTheory> LearningTheoryCreator(const uint64_t &learning_theory_type);
+std::shared_ptr<LearningTheory> CreateLearningTheory(
+                              const LTType &learning_theory_type);
 
 class FeedLearning: public LearningTheory {
  public:
