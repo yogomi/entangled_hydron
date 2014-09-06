@@ -22,6 +22,7 @@ class LearningTheory {
   LearningTheory() {}
   ~LearningTheory() {}
 
+  virtual void SetParameter(void *param) {}
   virtual void Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) = 0;
