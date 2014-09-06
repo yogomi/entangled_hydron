@@ -32,6 +32,7 @@ class LearningTheory {
   }
   virtual ~LearningTheory() {}
 
+  virtual uint64_t LTType() = 0;
   virtual void ReadParameter(FILE *file) {
     parameter->Read(file);
   }
@@ -53,6 +54,9 @@ class KeepCurrent: public LearningTheory {
   KeepCurrent() {}
   ~KeepCurrent() {}
 
+  virtual uint64_t LTType() {
+    return KEEP_CURRENT;
+  }
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
   Hydron CreateHydron(
@@ -68,6 +72,9 @@ class FeedLearning: public LearningTheory {
   FeedLearning() {}
   ~FeedLearning() {}
 
+  virtual uint64_t LTType() {
+    return FEED_LEARNING;
+  }
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter);
   Hydron CreateHydron(
