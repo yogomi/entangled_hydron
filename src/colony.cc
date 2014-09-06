@@ -38,9 +38,8 @@ Colony::~Colony() {
   }
 }
 
-void Colony::SetLearningTheory(
-    std::shared_ptr<LearningTheory> learning_theory) {
-  learning_theory_ = learning_theory;
+void Colony::SetLearningTheory(const LTType &lt_type) {
+  CreateLearningTheory(lt_type);
 }
 
 void Colony::Ignition() {
@@ -106,6 +105,12 @@ void Colony::Save() const {
   uint64_t header[2] = {0, 0};
   fwrite(header, sizeof(uint64_t), 2, file.get());
   ExportParameter_(file.get());
+
+  // Export LearningTheory
+  LTType lt_type = learning_theory_->LTType();
+  fwrite(&lt_type, sizeof(lt_type), 1, file.get());
+  learning_theory_->ExportParameter(file.get());
+
   for (const auto& h : *hydron_map_) {
     h.second.ExportStatus(file.get());
   }
@@ -122,6 +127,12 @@ void Colony::Load() {
   uint64_t header[2];
   fread(header, sizeof(uint64_t), 2, file.get());
   ImportParameter_(file.get());
+
+  // Import LearningTheory
+  LTType lt_type;
+  fread(&lt_type, sizeof(lt_type), 1, file.get());
+  SetLearningTheory(lt_type);
+  learning_theory_->ImportParameter(file.get());
 
   printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
       , parameter_->feed_capability

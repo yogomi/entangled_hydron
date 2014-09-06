@@ -33,7 +33,7 @@ class Colony {
     }
   ~Colony();
 
-  void SetLearningTheory(std::shared_ptr<LearningTheory> learning_theory);
+  void SetLearningTheory(const LTType &lt_type);
 
   // Ignition, CalculationHeatEffect and ApplyFeedback are
   // functions called by Beat function in AlliedColonies class.
