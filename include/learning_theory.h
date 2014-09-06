@@ -17,18 +17,35 @@ enum LTType {
   , FEED_LEARNING = 1
 };
 
+class LTParameter {
+ public:
+  LTParameter() {}
+  virtual ~LTParameter() {}
+  virtual void Read(FILE *file) {}
+  virtual void Export(FILE *file) {}
+};
+
 class LearningTheory {
  public:
-  LearningTheory() {}
-  ~LearningTheory() {}
+  LearningTheory() {
+    parameter = std::shared_ptr<LTParameter>(new LTParameter);
+  }
+  virtual ~LearningTheory() {}
 
-  virtual void SetParameter(void *param) {}
+  virtual void ReadParameter(FILE *file) {
+    parameter->Read(file);
+  }
+  virtual void ExportParameter(FILE *file) {
+    parameter->Export(file);
+  }
   virtual void Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) = 0;
   virtual Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) = 0;
+ private:
+  std::shared_ptr<LTParameter> parameter;
 };
 
 class KeepCurrent: public LearningTheory {
