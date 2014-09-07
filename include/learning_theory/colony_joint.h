@@ -24,7 +24,7 @@ class ColonyJointParameter: public LTParameter {
 class ColonyJoint: public LearningTheory {
  public:
   ColonyJoint() {
-    parameter = std::shared_ptr<LTParameter>(new ColonyJointParameter);
+    parameter_ = std::shared_ptr<LTParameter>(new ColonyJointParameter);
   }
   ~ColonyJoint() {}
 
