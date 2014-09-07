@@ -39,7 +39,7 @@ Colony::~Colony() {
 }
 
 void Colony::SetLearningTheory(const LTType &lt_type) {
-  CreateLearningTheory(lt_type);
+  learning_theory_ = CreateLearningTheory(lt_type);
 }
 
 void Colony::Ignition() {
