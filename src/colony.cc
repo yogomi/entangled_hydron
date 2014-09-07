@@ -13,6 +13,7 @@
 #include "./cube.h"
 #include "./hydron.h"
 #include "./colony.h"
+#include "learning_theory/learning_theory.h"
 
 namespace hydron {
 

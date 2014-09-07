@@ -10,7 +10,7 @@
 #include "./colony.h"
 #include "./hydron.h"
 #include "./random_number_generator.h"
-#include "./learning_theory.h"
+#include "learning_theory/learning_theory.h"
 
 namespace hydron {
 

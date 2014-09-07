@@ -8,7 +8,7 @@
 #include "./hydron.h"
 #include "./colony.h"
 #include "./database.h"
-#include "./learning_theory.h"
+#include "learning_theory/learning_theory.h"
 
 using hydron::Colony;
 using hydron::AlliedColonies;
