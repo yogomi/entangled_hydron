@@ -6,6 +6,7 @@ add_executable(entangled_hydron
                   colony.cc
                   learning_theory/learning_theory.cc
                   learning_theory/keep_current.cc
+                  learning_theory/colony_joint.cc
                   learning_theory/feed_learning.cc
                   database.cc
                   random_number_generator.cc)

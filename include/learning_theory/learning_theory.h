@@ -14,7 +14,8 @@ namespace hydron {
 
 enum LTType {
   KEEP_CURRENT = 0
-  , FEED_LEARNING = 1
+  , COLONY_JOINT = 1
+  , FEED_LEARNING = 2
 };
 
 class LTParameter {
@@ -45,7 +46,7 @@ class LearningTheory {
   virtual Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) = 0;
- private:
+ protected:
   std::shared_ptr<LTParameter> parameter;
 };
 
