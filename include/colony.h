@@ -10,6 +10,7 @@
 #include "./vector.h"
 #include "./hydron.h"
 #include "learning_theory/learning_theory.h"
+#include "learning_theory/keep_current.h"
 
 namespace hydron {
 

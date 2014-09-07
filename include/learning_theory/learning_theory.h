@@ -1,7 +1,7 @@
 // Copyright 2014 Makoto Yano
 
-#ifndef INCLUDE_LEARNING_THEORY_H_
-#define INCLUDE_LEARNING_THEORY_H_
+#ifndef INCLUDE_LEARNING_THEORY_LEARNING_THEORY_H_
+#define INCLUDE_LEARNING_THEORY_LEARNING_THEORY_H_
 
 #include <boost/optional.hpp>
 #include <memory>
@@ -49,43 +49,9 @@ class LearningTheory {
   std::shared_ptr<LTParameter> parameter;
 };
 
-class KeepCurrent: public LearningTheory {
- public:
-  KeepCurrent() {}
-  ~KeepCurrent() {}
-
-  virtual enum LTType LTType() {
-    return KEEP_CURRENT;
-  }
-  void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
-  Hydron CreateHydron(
-                  const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
-};
-
 std::shared_ptr<LearningTheory> CreateLearningTheory(
                               const LTType &learning_theory_type);
 
-class FeedLearning: public LearningTheory {
- public:
-  FeedLearning() {}
-  ~FeedLearning() {}
-
-  virtual enum LTType LTType() {
-    return FEED_LEARNING;
-  }
-  void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
-  Hydron CreateHydron(
-                  const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
-
- private:
-  boost::optional<float> CreateConnection_(Hydron &hydron
-              , const common3d::NeighborhoodMap &distance_map_in_colony);
-};
-
 }  // namespace hydron
 
-#endif  // INCLUDE_LEARNING_THEORY_H_
+#endif  // INCLUDE_LEARNING_THEORY_LEARNING_THEORY_H_
