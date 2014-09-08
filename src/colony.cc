@@ -135,11 +135,6 @@ void Colony::Load() {
   SetLearningTheory(lt_type);
   learning_theory_->ImportParameter(file.get());
 
-  printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
-      , parameter_->feed_capability
-      , parameter_->food
-      , parameter_->create_hydron_cost
-      , parameter_->threshold_density);
   while (ReadHydron_(file.get()) == 0) {}
 }
 
@@ -198,10 +193,6 @@ void Colony::ShowConnectionReverseMap() const {
   printf("=================\n");
 }
 
-void Colony::Feeding_() {
-  parameter_->food += parameter_->feed_capability;
-}
-
 void Colony::Digest_() {
   float volume = common3d::CubeVolumeFromBothEndVertix(
                         parameter_->max_area_vertix
@@ -225,10 +216,6 @@ void Colony::ExportParameter_(FILE *file) const {
   };
   ExportVector(parameter_->max_area_vertix);
   ExportVector(parameter_->min_area_vertix);
-  ExportFloat(parameter_->feed_capability);
-  ExportFloat(parameter_->food);
-  ExportFloat(parameter_->create_hydron_cost);
-  ExportFloat(parameter_->threshold_density);
 }
 
 void Colony::ImportParameter_(FILE *file) {
@@ -237,22 +224,6 @@ void Colony::ImportParameter_(FILE *file) {
   parameter_->max_area_vertix = common3d::Vector(v.x, v.y, v.z);
   fread(&v, sizeof(v), 1, file);
   parameter_->min_area_vertix = common3d::Vector(v.x, v.y, v.z);
-  fread(&(parameter_->feed_capability)
-      , sizeof(parameter_->feed_capability)
-      , 1
-      , file);
-  fread(&(parameter_->food)
-      , sizeof(parameter_->food)
-      , 1
-      , file);
-  fread(&(parameter_->create_hydron_cost)
-      , sizeof(parameter_->create_hydron_cost)
-      , 1
-      , file);
-  fread(&(parameter_->threshold_density)
-      , sizeof(parameter_->threshold_density)
-      , 1
-      , file);
 }
 
 int32_t Colony::ReadHydron_(FILE *file) {

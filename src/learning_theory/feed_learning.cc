@@ -22,7 +22,8 @@ namespace hydron {
 void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , std::shared_ptr<struct ColonyParameter> parameter) {
-  parameter->food -= hydron_map->size();
+  parameter_.Feeding();
+  parameter_->food -= hydron_map->size();
   float surplus_food = parameter->food / hydron_map->size();
 }
 
@@ -84,6 +85,44 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
   }
 
   return boost::none;
+}
+
+void FeedLearningParameter::Import(FILE *file) {
+  fread(&feed_capability
+      , sizeof(feed_capability)
+      , 1
+      , file);
+  fread(&food_
+      , sizeof(food)
+      , 1
+      , file);
+  fread(&create_hydron_cost
+      , sizeof(create_hydron_cost)
+      , 1
+      , file);
+  fread(&threshold_density
+      , sizeof(threshold_density)
+      , 1
+      , file);
+  printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
+      , feed_capability
+      , food
+      , create_hydron_cost
+      , threshold_density);
+}
+
+void FeedLearningParameter::Export(FILE *file) {
+  auto ExportFloat = [&file](const float value) -> void {
+    fwrite(&value, sizeof(value), 1, file);
+  };
+  ExportFloat(feed_capability);
+  ExportFloat(food);
+  ExportFloat(create_hydron_cost);
+  ExportFloat(threshold_density);
+}
+
+void FeedLearningParameter::Feeding() {
+  food += feed_capability;
 }
 
 }  // namespace hydron

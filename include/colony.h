@@ -17,10 +17,6 @@ namespace hydron {
 struct ColonyParameter {
   common3d::Vector max_area_vertix;
   common3d::Vector min_area_vertix;
-  float feed_capability;
-  float food;
-  float create_hydron_cost;
-  float threshold_density;
 };
 
 class Colony {

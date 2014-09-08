@@ -32,6 +32,19 @@ class FeedLearning: public LearningTheory {
               , const common3d::NeighborhoodMap &distance_map_in_colony);
 };
 
+class FeedLearningParameter: public LTParameter {
+ public:
+  FeedLearningParameter() {}
+  ~FeedLearningParameter() {}
+  void Import(FILE *file);
+  void Export(FILE *file);
+  void Feeding();
+  float feed_capability;
+  float food;
+  float create_hydron_cost;
+  float threshold_density;
+};
+
 }  // namespace hydron
 
 #endif  // INCLUDE_LEARNING_THEORY_FEED_LEARNING_H_
