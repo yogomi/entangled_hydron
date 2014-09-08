@@ -15,17 +15,19 @@ namespace hydron {
 
 class FeedLearning: public LearningTheory {
  public:
-  FeedLearning() {}
+  FeedLearning();
   ~FeedLearning() {}
 
   virtual enum LTType LTType() {
     return FEED_LEARNING;
   }
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
+                , const std::shared_ptr<struct ColonyArea> &area);
+  bool PossibleToCreateNewHydron(
+                  const std::shared_ptr<struct ColonyArea> &area);
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
+                , const std::shared_ptr<struct ColonyParameter> &area);
 
  private:
   boost::optional<float> CreateConnection_(Hydron &hydron
@@ -34,15 +36,25 @@ class FeedLearning: public LearningTheory {
 
 class FeedLearningParameter: public LTParameter {
  public:
-  FeedLearningParameter() {}
+  FeedLearningParameter();
   ~FeedLearningParameter() {}
   void Import(FILE *file);
   void Export(FILE *file);
+
   void Feeding();
-  float feed_capability;
-  float food;
-  float create_hydron_cost;
-  float threshold_density;
+  void Consume(const float &meal);
+  float Food() {
+    return food_;
+  }
+  float CreateHydronCost() {
+    return create_hydron_cost_;
+  }
+
+ private:
+  float feed_capability_;
+  float food_;
+  float create_hydron_cost_;
+  float threshold_density_;
 };
 
 }  // namespace hydron

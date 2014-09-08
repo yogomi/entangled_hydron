@@ -16,14 +16,17 @@ namespace hydron {
 
 void KeepCurrent::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter) {
-  parameter->food -= parameter->feed_capability;
+                , const std::shared_ptr<struct ColonyArea> &area) {
+}
+
+bool KeepCurrent::PossibleToCreateNewHydron(
+                , const std::shared_ptr<struct ColonyArea> &area) {
+  return false;
 }
 
 Hydron KeepCurrent::CreateHydron(
                 const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter) {
-  parameter->food -= parameter->create_hydron_cost;
+                , const std::shared_ptr<struct ColonyArea> &area) {
   return Hydron(parameter->min_area_vertix);
 }
 

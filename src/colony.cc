@@ -56,8 +56,7 @@ void Colony::CalculateHeatEffect() {
 }
 
 void Colony::ApplyFeedback() {
-  Feeding_();
-  learning_theory_->Learning(hydron_map_, parameter_);
+  learning_theory_->Learning(hydron_map_, area_);
   Digest_();
 }
 
@@ -94,9 +93,12 @@ void Colony::ConnectHydronToHydron(const HydronId &from
   }
 }
 
-void Colony::SetParameter(
-    const struct ColonyParameter &parameter) {
-  *parameter_ = parameter;
+void Colony::SetArea(const common3d::Vector &max, const common3d::Vector &min) {
+  area_->max_area_vertix = max;
+  area_->min_area_vertix = min;
+  area_->volume = common3d::CubeVolumeFromBothEndVertix(
+                        area_->max_area_vertix
+                        , area_->min_area_vertix);
 }
 
 void Colony::Save() const {
@@ -193,14 +195,14 @@ void Colony::ShowConnectionReverseMap() const {
   printf("=================\n");
 }
 
+void Colony::Initialize_() {
+  SetArea(common3d::Vector(100.0f, 100.0f, 100.0f)
+        , common3d::Vector(-100.0f, -100.0f, -100.0f));
+}
+
 void Colony::Digest_() {
-  float volume = common3d::CubeVolumeFromBothEndVertix(
-                        parameter_->max_area_vertix
-                        , parameter_->min_area_vertix);
-  float density = parameter_->food / volume;
-  if (density > parameter_->threshold_density) {
-    printf("density = %f\n", density);
-    Hydron h = learning_theory_->CreateHydron(hydron_map_, parameter_);
+  if (learning_theory_->PossibleToCreateNewHydron(area_)) {
+    Hydron h = learning_theory_->CreateHydron(hydron_map_, area_);
     AddHydron(h);
   }
 }
@@ -214,16 +216,17 @@ void Colony::ExportParameter_(FILE *file) const {
     ExportFloat(v.y());
     ExportFloat(v.z());
   };
-  ExportVector(parameter_->max_area_vertix);
-  ExportVector(parameter_->min_area_vertix);
+  ExportVector(area_->max_area_vertix);
+  ExportVector(area_->min_area_vertix);
 }
 
 void Colony::ImportParameter_(FILE *file) {
-  struct common3d::MinimumElementVector v;
-  fread(&v, sizeof(v), 1, file);
-  parameter_->max_area_vertix = common3d::Vector(v.x, v.y, v.z);
-  fread(&v, sizeof(v), 1, file);
-  parameter_->min_area_vertix = common3d::Vector(v.x, v.y, v.z);
+  struct common3d::MinimumElementVector max;
+  struct common3d::MinimumElementVector min;
+  fread(&max, sizeof(max), 1, file);
+  fread(&min, sizeof(min), 1, file);
+  SetArea(common3d::Vector(max.x, max.y, max.z)
+      , common3d::Vector(min.x, min.y, min.z));
 }
 
 int32_t Colony::ReadHydron_(FILE *file) {

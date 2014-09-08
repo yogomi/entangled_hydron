@@ -19,27 +19,37 @@ namespace hydron {
 // FeedLearning learning theory
 /////////////////////////////////////////////////////////////////////////////
 
+FeedLearning::FeeedLearning() {
+    parameter_ = std::shared_ptr<LTParameter>(new FeedLearningParameter);
+}
+
 void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter) {
+                , const std::shared_ptr<struct ColonyArea> &area) {
   parameter_.Feeding();
-  parameter_->food -= hydron_map->size();
-  float surplus_food = parameter->food / hydron_map->size();
+  parameter_->Consume(hydron_map->size());
+  float surplus_food = parameter->Food() / hydron_map->size();
+}
+
+bool PossibleToCreateNewHydron(
+            const std::shared_ptr<struct ColonyArea> &area) {
+  float density = parameter_->Food() / area->volume;
+  return density > parameter_->threshold_density;
 }
 
 Hydron FeedLearning::CreateHydron(
               const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-              , std::shared_ptr<struct ColonyParameter> parameter) {
-  Hydron h = Hydron(Random<float>(parameter->min_area_vertix.x()
-                                , parameter->max_area_vertix.x())
-              , Random<float>(parameter->min_area_vertix.y()
-                            , parameter->max_area_vertix.y())
-              , Random<float>(parameter->min_area_vertix.z()
-                            , parameter->max_area_vertix.z()));
+              , const std::shared_ptr<struct ColonyArea> &area) {
+  Hydron h = Hydron(Random<float>(area->min_area_vertix.x()
+                                , area->max_area_vertix.x())
+              , Random<float>(area->min_area_vertix.y()
+                            , area->max_area_vertix.y())
+              , Random<float>(area->min_area_vertix.z()
+                            , area->max_area_vertix.z()));
   HydronId self_id = h.Id();
-  parameter->food -= parameter->create_hydron_cost;
+  parameter_->Consume(parameter_->CreateHydronCost());
 
-  float create_connection_energy = parameter->create_hydron_cost;
+  float create_connection_energy = parameter_->CreateHydronCost();
   boost::optional<float> create_connection_cost;
 
   common3d::NeighborhoodMap distance_map_in_colony;
@@ -87,42 +97,57 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
   return boost::none;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+// Pramaeter class for FeedLearning.
+/////////////////////////////////////////////////////////////////////////////
+
+FeedLearningParameter::FeedLearningParameter()
+: feed_capability_(10000.0f)
+, food_(0.0f)
+, create_hydron_cost_(100.0f)
+, threshold_density_(1.0f)
+{}
+
 void FeedLearningParameter::Import(FILE *file) {
-  fread(&feed_capability
-      , sizeof(feed_capability)
+  fread(&feed_capability_
+      , sizeof(feed_capability_)
       , 1
       , file);
   fread(&food_
-      , sizeof(food)
+      , sizeof(food_)
       , 1
       , file);
-  fread(&create_hydron_cost
-      , sizeof(create_hydron_cost)
+  fread(&create_hydron_cost_
+      , sizeof(create_hydron_cost_)
       , 1
       , file);
-  fread(&threshold_density
-      , sizeof(threshold_density)
+  fread(&threshold_density_
+      , sizeof(threshold_density_)
       , 1
       , file);
   printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
-      , feed_capability
-      , food
-      , create_hydron_cost
-      , threshold_density);
+      , feed_capability_
+      , food_
+      , create_hydron_cost_
+      , threshold_density_);
 }
 
 void FeedLearningParameter::Export(FILE *file) {
   auto ExportFloat = [&file](const float value) -> void {
     fwrite(&value, sizeof(value), 1, file);
   };
-  ExportFloat(feed_capability);
-  ExportFloat(food);
-  ExportFloat(create_hydron_cost);
-  ExportFloat(threshold_density);
+  ExportFloat(feed_capability_);
+  ExportFloat(food_);
+  ExportFloat(create_hydron_cost_);
+  ExportFloat(threshold_density_);
 }
 
 void FeedLearningParameter::Feeding() {
-  food += feed_capability;
+  food_ += feed_capability_;
+}
+
+void FeedLearningParameter::Consume(const float &meal) {
+  food_ -= meal;
 }
 
 }  // namespace hydron

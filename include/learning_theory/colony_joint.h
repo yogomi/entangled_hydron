@@ -32,10 +32,12 @@ class ColonyJoint: public LearningTheory {
     return COLONY_JOINT;
   }
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
+                , const std::shared_ptr<struct ColonyArea> &area);
+  bool PossibleToCreateNewHydron(
+                  const std::shared_ptr<struct ColonyArea> &area);
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , std::shared_ptr<struct ColonyParameter> parameter);
+                , const std::shared_ptr<struct ColonyArea> &area);
  private:
   boost::optional<float> CreateConnection_(Hydron &hydron
               , const common3d::NeighborhoodMap &distance_map_in_colony);

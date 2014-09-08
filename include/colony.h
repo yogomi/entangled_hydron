@@ -14,16 +14,17 @@
 
 namespace hydron {
 
-struct ColonyParameter {
+struct ColonyArea {
   common3d::Vector max_area_vertix;
   common3d::Vector min_area_vertix;
+  float volume;
 };
 
 class Colony {
  public:
   explicit Colony(const char *colony_name)
     :colony_name_(colony_name)
-    , parameter_(new struct ColonyParameter)
+    , area_(new struct ColonyArea)
     , learning_theory_(new KeepCurrent)
     , hydron_map_(new std::map<HydronId, Hydron>) {
       Initialize_();
@@ -49,10 +50,10 @@ class Colony {
                                 , const HydronId &to
                                 , const float weight = 1);
 
-  struct ColonyParameter Parameter() {
-    return *parameter_;
+  struct ColonyArea Area() {
+    return *area_;
   }
-  void SetParameter(const struct ColonyParameter &parameter);
+  void SetArea(const common3d::Vector &max, const common3d::Vector &min);
 
   // Save all Hydrons to file.
   // Filename is colony_name_ + .bin.
@@ -76,15 +77,7 @@ class Colony {
  private:
   Colony() {}
 
-  void Initialize_() {
-    parameter_->max_area_vertix = common3d::Vector(100.0f, 100.0f, 100.0f);
-    parameter_->min_area_vertix = common3d::Vector(-100.0f, -100.0f, -100.0f);
-    parameter_->feed_capability = 100000000.0f;
-    parameter_->food = 0.0f;
-    parameter_->create_hydron_cost = 1000.0f;
-    parameter_->threshold_density = 10.0f;
-  }
-  void Feeding_();
+  void Initialize_();
   void Digest_();
 
   void ExportParameter_(FILE *file) const;
@@ -92,7 +85,7 @@ class Colony {
   int32_t ReadHydron_(FILE *file);
   std::string FileName_() const;
 
-  std::shared_ptr<struct ColonyParameter> parameter_;
+  std::shared_ptr<struct ColonyArea> area_;
   std::shared_ptr<LearningTheory> learning_theory_;
 
   std::string colony_name_;
