@@ -24,9 +24,9 @@ void ColonyJoint::Learning(
                 , const std::shared_ptr<struct ColonyArea> &area) {
 }
 
-bool ColonyJoint::PossibleToCreateNewHydron(
+int64_t ColonyJoint::BornOrDeath(
             const std::shared_ptr<struct ColonyArea> &area) {
-  return false;
+  return 0;
 }
 
 Hydron ColonyJoint::CreateHydron(

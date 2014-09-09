@@ -14,6 +14,7 @@
 #include "./hydron.h"
 #include "./colony.h"
 #include "learning_theory/learning_theory.h"
+#include "debug/log.h"
 
 namespace hydron {
 
@@ -30,7 +31,7 @@ Colony::~Colony() {
     for (auto &reverse_info : connection_reverse_map_) {
       for_each(reverse_info.second.begin()
             , reverse_info.second.end()
-            , [&reverse_info, &h](HydronId id) {
+            , [&reverse_info, &h](const HydronId &id) {
             if (h.first == id) {
               reverse_info.second.remove(id);
             }
@@ -152,6 +153,7 @@ void Colony::ShowHydronsStatus() const {
     h.second.ShowStatus();
   }
   printf("hydron amount = %" PRIuS "\n", hydron_map_->size());
+  learning_theory_->ShowParameter();
 }
 
 void Colony::ShowSignpostInformation() const {
@@ -201,9 +203,14 @@ void Colony::Initialize_() {
 }
 
 void Colony::Digest_() {
-  if (learning_theory_->PossibleToCreateNewHydron(area_)) {
+  int64_t born_or_death = learning_theory_->BornOrDeath(area_);
+  printf("%lu\n", hydron_map_->size());
+  for (; born_or_death > 0; --born_or_death) {
     Hydron h = learning_theory_->CreateHydron(hydron_map_, area_);
     AddHydron(h);
+  }
+  for (; born_or_death < 0; ++born_or_death) {
+    // TODO(MakotoYano): DeleteHydron
   }
 }
 

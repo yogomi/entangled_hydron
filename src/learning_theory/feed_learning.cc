@@ -28,6 +28,10 @@ FeedLearning::FeedLearning() {
 
 void FeedLearning::ImportParameter(FILE *file) {
   fread(&fl_parameter_, sizeof(fl_parameter_), 1, file);
+  ShowParameter();
+}
+
+void FeedLearning::ShowParameter() {
   printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
       , fl_parameter_.feed_capability
       , fl_parameter_.food
@@ -43,14 +47,22 @@ void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) {
   fl_parameter_.food += fl_parameter_.feed_capability;
-  fl_parameter_.food -= hydron_map->size();
   float surplus_food = fl_parameter_.food / hydron_map->size();
+
+  fl_parameter_.food -= hydron_map->size();
 }
 
-bool FeedLearning::PossibleToCreateNewHydron(
+int64_t FeedLearning::BornOrDeath(
             const std::shared_ptr<struct ColonyArea> &area) {
   float density = fl_parameter_.food / area->volume;
-  return density > fl_parameter_.density_threshold;
+  int64_t surplus =
+        static_cast<int64_t>(density / fl_parameter_.density_threshold);
+  printf("%lld ", surplus);
+  if (surplus > 0) {
+    return surplus;
+  } else {
+    return -1;
+  }
 }
 
 Hydron FeedLearning::CreateHydron(

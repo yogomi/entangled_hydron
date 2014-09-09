@@ -23,8 +23,7 @@ class KeepCurrent: public LearningTheory {
   }
   void Learning(std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area);
-  bool PossibleToCreateNewHydron(
-                  const std::shared_ptr<struct ColonyArea> &area);
+  int64_t BornOrDeath(const std::shared_ptr<struct ColonyArea> &area);
   Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area);

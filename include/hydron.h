@@ -21,7 +21,7 @@ struct HydronParameter {
   float threshold;
   float strength;
   float radiation_ability;
-  uint32_t refractory_span;
+  uint32_t remaining_refractory_span;
   uint32_t refractory_period;
 };
 
@@ -45,7 +45,7 @@ class Hydron {
                 , const float threshold
                 , const float strength
                 , const float radiation_ability
-                , const uint32_t refractory_span
+                , const uint32_t remaining_refractory_span
                 , const uint32_t refractory_period);
   void SetParameter(const struct HydronParameter &parameter);
   struct HydronParameter Parameter() const {

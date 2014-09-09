@@ -26,10 +26,11 @@ class LearningTheory {
   virtual enum LTType LTType() = 0;
   virtual void ImportParameter(FILE *file) {}
   virtual void ExportParameter(FILE *file) {}
+  virtual void ShowParameter() {}
   virtual void Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) = 0;
-  virtual bool PossibleToCreateNewHydron(
+  virtual int64_t BornOrDeath(
                   const std::shared_ptr<struct ColonyArea> &area) = 0;
   virtual Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map

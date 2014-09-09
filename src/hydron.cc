@@ -48,7 +48,7 @@ void Hydron::Fire() {
     }
 
     parameter_.temperature = 0.0f;
-    parameter_.refractory_period = parameter_.refractory_span;
+    parameter_.refractory_period = parameter_.remaining_refractory_span;
   }
 }
 
@@ -88,13 +88,13 @@ void Hydron::SetParameter(const float temperature
                       , const float threshold
                       , const float strength
                       , const float radiation_ability
-                      , const uint32_t refractory_span
+                      , const uint32_t remaining_refractory_span
                       , const uint32_t refractory_period) {
   parameter_.temperature = temperature;
   parameter_.threshold = threshold;
   parameter_.strength = strength;
   parameter_.radiation_ability = radiation_ability;
-  parameter_.refractory_span = refractory_span;
+  parameter_.remaining_refractory_span = remaining_refractory_span;
   parameter_.refractory_period = refractory_period;
   temperature_buffer_ = 0;
 }
@@ -149,7 +149,7 @@ void Hydron::ShowStatus() const {
   printf("threshold: %f; ", parameter_.threshold);
   printf("strength: %f; ", parameter_.strength);
   printf("radiation ability: %f; ", parameter_.radiation_ability);
-  printf("refractory span: %d; ", parameter_.refractory_span);
+  printf("remaining refractory span: %d; ", parameter_.remaining_refractory_span);
   printf("refractory period: %d; ", parameter_.refractory_period);
   printf("connectiong hydron count: %" PRIuS "; ", connecting_hydrons_.size());
   printf("connecting hydron ids: ");

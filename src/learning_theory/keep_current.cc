@@ -19,7 +19,7 @@ void KeepCurrent::Learning(
                 , const std::shared_ptr<struct ColonyArea> &area) {
 }
 
-bool KeepCurrent::PossibleToCreateNewHydron(
+int64_t KeepCurrent::BornOrDeath(
                 const std::shared_ptr<struct ColonyArea> &area) {
   return false;
 }
