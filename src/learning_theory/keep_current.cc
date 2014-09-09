@@ -20,14 +20,14 @@ void KeepCurrent::Learning(
 }
 
 bool KeepCurrent::PossibleToCreateNewHydron(
-                , const std::shared_ptr<struct ColonyArea> &area) {
+                const std::shared_ptr<struct ColonyArea> &area) {
   return false;
 }
 
 Hydron KeepCurrent::CreateHydron(
                 const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) {
-  return Hydron(parameter->min_area_vertix);
+  return Hydron(area->min_area_vertix);
 }
 
 }  // namespace hydron

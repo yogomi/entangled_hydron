@@ -13,19 +13,9 @@
 
 namespace hydron {
 
-class ColonyJointParameter: public LTParameter {
- public:
-  ColonyJointParameter() {}
-  ~ColonyJointParameter() {}
-  void Import(FILE *file) {}
-  void Export(FILE *file) {}
-};
-
 class ColonyJoint: public LearningTheory {
  public:
-  ColonyJoint() {
-    parameter_ = std::shared_ptr<LTParameter>(new ColonyJointParameter);
-  }
+  ColonyJoint() {}
   ~ColonyJoint() {}
 
   virtual enum LTType LTType() {

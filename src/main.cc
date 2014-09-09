@@ -29,7 +29,6 @@ int main() {
   brain.SetColony(colony);
   colony->Load();
 
-      return 0;
   int i = 0;
   while (true) {
     brain.Beat();

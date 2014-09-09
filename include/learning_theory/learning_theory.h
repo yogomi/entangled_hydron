@@ -18,28 +18,14 @@ enum LTType {
   , FEED_LEARNING = 2
 };
 
-class LTParameter {
- public:
-  LTParameter() {}
-  virtual ~LTParameter() {}
-  virtual void Import(FILE *file) {}
-  virtual void Export(FILE *file) {}
-};
-
 class LearningTheory {
  public:
-  LearningTheory() {
-    parameter_ = std::shared_ptr<LTParameter>(new LTParameter);
-  }
+  LearningTheory() {}
   virtual ~LearningTheory() {}
 
   virtual enum LTType LTType() = 0;
-  virtual void ImportParameter(FILE *file) {
-    parameter_->Import(file);
-  }
-  virtual void ExportParameter(FILE *file) {
-    parameter_->Export(file);
-  }
+  virtual void ImportParameter(FILE *file) {}
+  virtual void ExportParameter(FILE *file) {}
   virtual void Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) = 0;
@@ -48,8 +34,6 @@ class LearningTheory {
   virtual Hydron CreateHydron(
                   const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) = 0;
- protected:
-  std::shared_ptr<LTParameter> parameter_;
 };
 
 std::shared_ptr<LearningTheory> CreateLearningTheory(
