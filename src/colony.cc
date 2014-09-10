@@ -81,6 +81,10 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
   return 0;
 }
 
+void Colony::DeleteHydron(const HydronId &id) {
+  return;
+}
+
 void Colony::ConnectHydronToHydron(const Hydron &from
                                 , const Hydron &to
                                 , const float weight) {

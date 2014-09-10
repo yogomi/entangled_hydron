@@ -43,6 +43,7 @@ class Colony {
   // Normary success, return 0.
   // If failed, return a minus value.
   int32_t AddHydron(const Hydron &hydron);
+  void DeleteHydron(const HydronId &id);
   void ConnectHydronToHydron(const Hydron &from
                                 , const Hydron &to
                                 , const float weight = 1);
