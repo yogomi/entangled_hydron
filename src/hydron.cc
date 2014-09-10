@@ -39,7 +39,7 @@ void Hydron::RegisterToAllHydronMap() {
   neighbor_hydron_searcher_.AddVector(id_);
 }
 
-void Hydron::Fire() {
+bool Hydron::Fire() {
   if (parameter_.temperature > parameter_.threshold) {
     for (const auto &connection : connecting_hydrons_) {
       if (all_hydron_map_.find(connection.first) != all_hydron_map_.end()) {
@@ -49,7 +49,9 @@ void Hydron::Fire() {
 
     parameter_.temperature = 0.0f;
     parameter_.refractory_period = parameter_.remaining_refractory_span;
+    return true;
   }
+  return false;
 }
 
 void Hydron::AddHeat(const float &heat) {

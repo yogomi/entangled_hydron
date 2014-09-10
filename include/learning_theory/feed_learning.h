@@ -13,7 +13,7 @@
 
 namespace hydron {
 
-struct FLParameter {
+struct FLEnergyParameter {
   float feed_capability;
   float food;
   float create_hydron_cost;
@@ -39,7 +39,7 @@ class FeedLearning: public LearningTheory {
                 , const std::shared_ptr<struct ColonyArea> &area);
 
  private:
-  FLParameter fl_parameter_;
+  FLEnergyParameter energy_parameter_;
   boost::optional<float> CreateConnection_(Hydron &hydron
               , const common3d::NeighborhoodMap &distance_map_in_colony);
 };

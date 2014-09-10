@@ -64,10 +64,7 @@ class Colony {
   // If it could not open the file, remain empty Hydron list.
   void Load();
 
-  static Colony* GetAffiliatedColony(const HydronId id);
-
   void ShowHydronsStatus() const;
-  void ShowSignpostInformation() const;
   void ShowConnectionReverseMap() const;
 
   std::string Name() const {
@@ -90,7 +87,7 @@ class Colony {
 
   std::string colony_name_;
   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map_;
-  static std::map<HydronId, Colony *> colony_signpost_;
+  std::shared_ptr<std::list<HydronId>> idling_hydron_ranking;
   static std::map<HydronId, HydronIdList> connection_reverse_map_;
 };
 

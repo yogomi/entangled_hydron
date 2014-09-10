@@ -20,43 +20,43 @@ namespace hydron {
 /////////////////////////////////////////////////////////////////////////////
 
 FeedLearning::FeedLearning() {
-  fl_parameter_.feed_capability = 10000.0f;
-  fl_parameter_.food = 0.0f;
-  fl_parameter_.create_hydron_cost = 100.0f;
-  fl_parameter_.density_threshold = 1.0f;
+  energy_parameter_.feed_capability = 10000.0f;
+  energy_parameter_.food = 0.0f;
+  energy_parameter_.create_hydron_cost = 100.0f;
+  energy_parameter_.density_threshold = 1.0f;
 }
 
 void FeedLearning::ImportParameter(FILE *file) {
-  fread(&fl_parameter_, sizeof(fl_parameter_), 1, file);
+  fread(&energy_parameter_, sizeof(energy_parameter_), 1, file);
   ShowParameter();
 }
 
 void FeedLearning::ShowParameter() {
   printf("feed_cap = %f, food = %f, create_cost = %f, threshold = %f\n"
-      , fl_parameter_.feed_capability
-      , fl_parameter_.food
-      , fl_parameter_.create_hydron_cost
-      , fl_parameter_.density_threshold);
+      , energy_parameter_.feed_capability
+      , energy_parameter_.food
+      , energy_parameter_.create_hydron_cost
+      , energy_parameter_.density_threshold);
 }
 
 void FeedLearning::ExportParameter(FILE *file) {
-  fwrite(&fl_parameter_, sizeof(fl_parameter_), 1, file);
+  fwrite(&energy_parameter_, sizeof(energy_parameter_), 1, file);
 }
 
 void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) {
-  fl_parameter_.food += fl_parameter_.feed_capability;
-  float surplus_food = fl_parameter_.food / hydron_map->size();
+  energy_parameter_.food += energy_parameter_.feed_capability;
+  float surplus_food = energy_parameter_.food / hydron_map->size();
 
-  fl_parameter_.food -= hydron_map->size();
+  energy_parameter_.food -= hydron_map->size();
 }
 
 int64_t FeedLearning::BornOrDeath(
             const std::shared_ptr<struct ColonyArea> &area) {
-  float density = fl_parameter_.food / area->volume;
+  float density = energy_parameter_.food / area->volume;
   int64_t surplus =
-        static_cast<int64_t>(density / fl_parameter_.density_threshold);
+        static_cast<int64_t>(density / energy_parameter_.density_threshold);
   printf("%lld ", surplus);
   if (surplus > 0) {
     return surplus;
@@ -75,9 +75,9 @@ Hydron FeedLearning::CreateHydron(
               , Random<float>(area->min_area_vertix.z()
                             , area->max_area_vertix.z()));
   HydronId self_id = h.Id();
-  fl_parameter_.food -= fl_parameter_.create_hydron_cost;
+  energy_parameter_.food -= energy_parameter_.create_hydron_cost;
 
-  float create_connection_energy = fl_parameter_.create_hydron_cost;
+  float create_connection_energy = energy_parameter_.create_hydron_cost;
   boost::optional<float> create_connection_cost;
 
   common3d::NeighborhoodMap distance_map_in_colony;

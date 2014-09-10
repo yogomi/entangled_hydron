@@ -26,7 +26,6 @@ struct FileDeleter {
 
 Colony::~Colony() {
   for (auto &h : *hydron_map_) {
-    colony_signpost_.erase(h.first);
     connection_reverse_map_.erase(h.first);
     for (auto &reverse_info : connection_reverse_map_) {
       for_each(reverse_info.second.begin()
@@ -46,7 +45,10 @@ void Colony::SetLearningTheory(const LTType &lt_type) {
 
 void Colony::Ignition() {
   for (auto& h : *hydron_map_) {
-    h.second.Fire();
+    if (h.second.Fire()) {
+      idling_hydron_ranking->remove(h.first);
+      idling_hydron_ranking->push_back(h.first);
+    }
   }
 }
 
@@ -64,12 +66,12 @@ void Colony::ApplyFeedback() {
 int32_t Colony::AddHydron(const Hydron &hydron) {
   // If same ID hydron exist in any colony.
   // Fail AddHydron.
-  if (colony_signpost_.find(hydron.Id()) != colony_signpost_.end()) {
+  if (Hydron::SpecifiedHydronExist(hydron.Id())) {
     return -1;
   }
   (*hydron_map_)[hydron.Id()] = hydron;
-  colony_signpost_[hydron.Id()] = this;
   (*hydron_map_)[hydron.Id()].RegisterToAllHydronMap();
+  idling_hydron_ranking->push_back(hydron.Id());
 
   HydronConnections connecting_hydrons = hydron.ConnectingHydrons();
   for (const auto &connection : connecting_hydrons) {
@@ -141,37 +143,12 @@ void Colony::Load() {
   while (ReadHydron_(file.get()) == 0) {}
 }
 
-Colony* Colony::GetAffiliatedColony(const HydronId id) {
-  if (colony_signpost_.find(id) == colony_signpost_.end()) {
-    return nullptr;
-  }
-  return colony_signpost_[id];
-}
-
 void Colony::ShowHydronsStatus() const {
   for (auto& h : *hydron_map_) {
     h.second.ShowStatus();
   }
   printf("hydron amount = %" PRIuS "\n", hydron_map_->size());
   learning_theory_->ShowParameter();
-}
-
-void Colony::ShowSignpostInformation() const {
-  printf("=================");
-  printf("ShowSignpostInformation");
-  printf(" Begin");
-  printf("=================\n");
-  for (auto& info : colony_signpost_) {
-    printf("((%f, %f, %f), %s)\n"
-        , info.first.x()
-        , info.first.y()
-        , info.first.z()
-        , info.second->Name().c_str());
-  }
-  printf("=================");
-  printf("ShowSignpostInformation");
-  printf(" End");
-  printf("=================\n");
 }
 
 void Colony::ShowConnectionReverseMap() const {
@@ -210,7 +187,10 @@ void Colony::Digest_() {
     AddHydron(h);
   }
   for (; born_or_death < 0; ++born_or_death) {
-    // TODO(MakotoYano): DeleteHydron
+    auto it = idling_hydron_ranking.begin()
+    if (it != idling_hydron_ranking.end()) {
+      DeleteHydron(*id);
+    }
   }
 }
 
@@ -266,7 +246,6 @@ std::string Colony::FileName_() const {
   return colony_name_ + ".bin";
 }
 
-std::map<HydronId, Colony *> Colony::colony_signpost_;
 std::map<HydronId, HydronIdList> Colony::connection_reverse_map_;
 
 void AlliedColonies::SetColony(const std::shared_ptr<Colony> &colony) {

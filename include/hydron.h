@@ -35,7 +35,7 @@ class Hydron {
   explicit Hydron(const HydronId &id);
   void RegisterToAllHydronMap();
 
-  void Fire();
+  bool Fire();
   void AddHeat(const float &heat);
   void AdaptHeatEffect();
 
@@ -77,6 +77,9 @@ class Hydron {
     return neighbor_hydron_searcher_;
   }
 
+  static bool SpecifiedHydronExist(const HydronId &id) {
+    return (all_hydron_map_.find(id) != all_hydron_map_.end());
+  }
   static MaybeHydronParameter GetSpecifiedHydronParameter(const HydronId &id) {
     auto it = all_hydron_map_.find(id);
     if (it == all_hydron_map_.end()) {
