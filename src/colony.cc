@@ -46,8 +46,8 @@ void Colony::SetLearningTheory(const LTType &lt_type) {
 void Colony::Ignition() {
   for (auto& h : *hydron_map_) {
     if (h.second.Fire()) {
-      idling_hydron_ranking->remove(h.first);
-      idling_hydron_ranking->push_back(h.first);
+      idling_hydron_ranking_->remove(h.first);
+      idling_hydron_ranking_->push_back(h.first);
     }
   }
 }
@@ -71,7 +71,7 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
   }
   (*hydron_map_)[hydron.Id()] = hydron;
   (*hydron_map_)[hydron.Id()].RegisterToAllHydronMap();
-  idling_hydron_ranking->push_back(hydron.Id());
+  idling_hydron_ranking_->push_back(hydron.Id());
 
   HydronConnections connecting_hydrons = hydron.ConnectingHydrons();
   for (const auto &connection : connecting_hydrons) {
@@ -82,6 +82,18 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
 }
 
 void Colony::DeleteHydron(const HydronId &id) {
+  auto it = hydron_map_->find(id);
+  if (it == hydron_map_->end()) {
+    return;
+  }
+  HydronConnections connecting_hydrons = it->second.ConnectingHydrons();
+  for (const auto &connection : connecting_hydrons) {
+    connection_reverse_map_[connection.first].remove(id);
+  }
+
+  idling_hydron_ranking_->remove(id);
+
+  hydron_map_->erase(id);
   return;
 }
 
@@ -185,15 +197,15 @@ void Colony::Initialize_() {
 
 void Colony::Digest_() {
   int64_t born_or_death = learning_theory_->BornOrDeath(area_);
-  printf("%lu\n", hydron_map_->size());
+  printf("%lu ", hydron_map_->size());
   for (; born_or_death > 0; --born_or_death) {
     Hydron h = learning_theory_->CreateHydron(hydron_map_, area_);
     AddHydron(h);
   }
   for (; born_or_death < 0; ++born_or_death) {
-    auto it = idling_hydron_ranking.begin()
-    if (it != idling_hydron_ranking.end()) {
-      DeleteHydron(*id);
+    auto it = idling_hydron_ranking_->begin();
+    if (it != idling_hydron_ranking_->end()) {
+      DeleteHydron(*it);
     }
   }
 }

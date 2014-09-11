@@ -4,6 +4,7 @@
 #define INCLUDE_COLONY_H_
 
 #include <memory>
+#include <list>
 #include <map>
 #include <string>
 
@@ -26,7 +27,8 @@ class Colony {
     :colony_name_(colony_name)
     , area_(new struct ColonyArea)
     , learning_theory_(new KeepCurrent)
-    , hydron_map_(new std::map<HydronId, Hydron>) {
+    , hydron_map_(new std::map<HydronId, Hydron>)
+    , idling_hydron_ranking_(new std::list<HydronId>) {
       Initialize_();
     }
   ~Colony();
@@ -88,7 +90,7 @@ class Colony {
 
   std::string colony_name_;
   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map_;
-  std::shared_ptr<std::list<HydronId>> idling_hydron_ranking;
+  std::shared_ptr<std::list<HydronId>> idling_hydron_ranking_;
   static std::map<HydronId, HydronIdList> connection_reverse_map_;
 };
 

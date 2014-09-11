@@ -54,15 +54,12 @@ void FeedLearning::Learning(
 
 int64_t FeedLearning::BornOrDeath(
             const std::shared_ptr<struct ColonyArea> &area) {
-  float density = energy_parameter_.food / area->volume;
+  float surplus_food = energy_parameter_.food -
+                (area->volume * energy_parameter_.density_threshold);
   int64_t surplus =
-        static_cast<int64_t>(density / energy_parameter_.density_threshold);
+      static_cast<int64_t>(surplus_food / energy_parameter_.create_hydron_cost);
   printf("%lld ", surplus);
-  if (surplus > 0) {
-    return surplus;
-  } else {
-    return -1;
-  }
+  return surplus;
 }
 
 Hydron FeedLearning::CreateHydron(
