@@ -47,7 +47,7 @@ void FeedLearning::Learning(
                   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map
                 , const std::shared_ptr<struct ColonyArea> &area) {
   energy_parameter_.food += energy_parameter_.feed_capability;
-  float surplus_food = energy_parameter_.food / hydron_map->size();
+  float food_for_any_hydron = energy_parameter_.food / hydron_map->size();
 
   energy_parameter_.food -= hydron_map->size();
 }
