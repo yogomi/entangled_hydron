@@ -31,6 +31,7 @@ int main() {
 
   int i = 0;
   while (true) {
+    printf("--------------------------------------\n");
     brain.Beat();
     if (i > 5000) {
       colony->ShowHydronsStatus();

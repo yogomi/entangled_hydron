@@ -56,7 +56,6 @@ int64_t FeedLearning::BornOrDeath(
                 (area->volume * energy_parameter_.density_threshold);
   int64_t surplus =
       static_cast<int64_t>(surplus_food / energy_parameter_.create_hydron_cost);
-  printf("%lld ", surplus);
   return surplus;
 }
 
