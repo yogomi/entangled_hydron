@@ -3,12 +3,13 @@
 #ifndef INCLUDE_COLONY_H_
 #define INCLUDE_COLONY_H_
 
+#include <Eigen/Core>
+
 #include <memory>
 #include <list>
 #include <map>
 #include <string>
 
-#include "./vector.h"
 #include "./hydron.h"
 #include "learning_theory/learning_theory.h"
 #include "learning_theory/keep_current.h"
@@ -16,8 +17,8 @@
 namespace hydron {
 
 struct ColonyArea {
-  common3d::Vector max_area_vertix;
-  common3d::Vector min_area_vertix;
+  Eigen::Vector3f max_area_vertix;
+  Eigen::Vector3f min_area_vertix;
   float volume;
 };
 
@@ -56,7 +57,7 @@ class Colony {
   struct ColonyArea Area() {
     return *area_;
   }
-  void SetArea(const common3d::Vector &max, const common3d::Vector &min);
+  void SetArea(const Eigen::Vector3f &max, const Eigen::Vector3f &min);
 
   // Save all Hydrons to file.
   // Filename is colony_name_ + .bin.

@@ -3,6 +3,7 @@
 #ifndef INCLUDE_HYDRON_H_
 #define INCLUDE_HYDRON_H_
 
+#include <Eigen/Core>
 #include <boost/optional.hpp>
 #include <cstdint>
 #include <list>
@@ -13,7 +14,7 @@
 
 namespace hydron {
 
-typedef common3d::Vector HydronId;
+typedef common3d::ComparableVector3f HydronId;
 typedef std::list<HydronId> HydronIdList;
 
 struct HydronParameter {
@@ -33,6 +34,7 @@ class Hydron {
   Hydron();
   Hydron(const float x, const float y, const float z);
   explicit Hydron(const HydronId &id);
+  explicit Hydron(const Eigen::Vector3f &vector);
   void RegisterToAllHydronMap();
 
   bool Fire();

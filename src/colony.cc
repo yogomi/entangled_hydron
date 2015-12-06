@@ -1,5 +1,7 @@
 // Copyright 2014 Makoto Yano
 
+#include <Eigen/Core>
+
 #include <memory>
 #include <string>
 #include <map>
@@ -9,7 +11,6 @@
 #include <cstdio>
 
 #include "x64_x32/format_type.h"
-#include "./vector.h"
 #include "./cube.h"
 #include "./hydron.h"
 #include "./colony.h"
@@ -112,7 +113,7 @@ void Colony::ConnectHydronToHydron(const HydronId &from
   }
 }
 
-void Colony::SetArea(const common3d::Vector &max, const common3d::Vector &min) {
+void Colony::SetArea(const Eigen::Vector3f &max, const Eigen::Vector3f &min) {
   area_->max_area_vertix = max;
   area_->min_area_vertix = min;
   area_->volume = common3d::CubeVolumeFromBothEndVertix(
@@ -191,8 +192,8 @@ void Colony::ShowConnectionReverseMap() const {
 }
 
 void Colony::Initialize_() {
-  SetArea(common3d::Vector(100.0f, 100.0f, 100.0f)
-        , common3d::Vector(-100.0f, -100.0f, -100.0f));
+  SetArea(Eigen::Vector3f(100.0f, 100.0f, 100.0f)
+        , Eigen::Vector3f(-100.0f, -100.0f, -100.0f));
 }
 
 void Colony::Digest_() {
@@ -214,7 +215,7 @@ void Colony::ExportParameter_(FILE *file) const {
   auto ExportFloat = [&file](const float value) -> void {
     fwrite(&value, sizeof(value), 1, file);
   };
-  auto ExportVector = [&file, &ExportFloat](const common3d::Vector &v) -> void {
+  auto ExportVector = [&file, &ExportFloat](const Eigen::Vector3f &v) -> void {
     ExportFloat(v.x());
     ExportFloat(v.y());
     ExportFloat(v.z());
@@ -228,8 +229,8 @@ void Colony::ImportParameter_(FILE *file) {
   struct common3d::MinimumElementVector min;
   fread(&max, sizeof(max), 1, file);
   fread(&min, sizeof(min), 1, file);
-  SetArea(common3d::Vector(max.x, max.y, max.z)
-      , common3d::Vector(min.x, min.y, min.z));
+  SetArea(Eigen::Vector3f(max.x, max.y, max.z)
+      , Eigen::Vector3f(min.x, min.y, min.z));
 }
 
 int32_t Colony::ReadHydron_(FILE *file) {

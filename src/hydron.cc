@@ -26,6 +26,11 @@ Hydron::Hydron(const HydronId &id)
   SetParameter(0.0f, 1.0f, 1.0f, 1.0f, 0, 0);
 }
 
+Hydron::Hydron(const Eigen::Vector3f &vector)
+  : id_(vector) {
+  SetParameter(0.0f, 1.0f, 1.0f, 1.0f, 0, 0);
+}
+
 Hydron::~Hydron() {
   auto it = all_hydron_map_.find(id_);
   if (it != all_hydron_map_.end() && it->second == this) {
@@ -129,7 +134,7 @@ void Hydron::ExportStatus(FILE *file) const {
   auto ExportFloat = [&file](const float value) -> void {
     fwrite(&value, sizeof(value), 1, file);
   };
-  auto ExportVector = [&file, &ExportFloat](const common3d::Vector &v) -> void {
+  auto ExportVector = [&file, &ExportFloat](const Eigen::Vector3f &v) -> void {
     ExportFloat(v.x());
     ExportFloat(v.y());
     ExportFloat(v.z());

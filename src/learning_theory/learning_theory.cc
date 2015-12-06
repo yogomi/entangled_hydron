@@ -1,11 +1,10 @@
 // Copyright 2014 Makoto Yano
 
+#include <Eigen/Core>
 #include <boost/optional.hpp>
 #include <memory>
 #include <functional>
 
-#include "./vector.h"
-#include "./math3d.h"
 #include "./neighborhood_map.h"
 #include "./colony.h"
 #include "./hydron.h"

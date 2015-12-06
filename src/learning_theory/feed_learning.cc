@@ -4,8 +4,6 @@
 #include <memory>
 #include <functional>
 
-#include "./vector.h"
-#include "./math3d.h"
 #include "./neighborhood_map.h"
 #include "./colony.h"
 #include "./hydron.h"
@@ -79,7 +77,7 @@ Hydron FeedLearning::CreateHydron(
 
   common3d::NeighborhoodMap distance_map_in_colony;
   for (auto const &hydron_info : *hydron_map) {
-    distance_map_in_colony[self_id.DistanceTo(hydron_info.first)].push_back(
+    distance_map_in_colony[(self_id - hydron_info.first).norm()].push_back(
                                                       hydron_info.first);
   }
   while (create_connection_energy > 0.0f) {
@@ -96,7 +94,8 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
       const common3d::NeighborhoodMap &neighbors) -> boost::optional<HydronId> {
     HydronConnections connections = hydron.ConnectingHydrons();
     for (auto &DistanceInfo : neighbors) {
-      for (const HydronId &id : DistanceInfo.second) {
+      for (const Eigen::Vector3f &hydron_position : DistanceInfo.second) {
+        HydronId id(hydron_position);
         if (connections.find(id) != connections.end()) continue;
         if (id == hydron.Id()) continue;
         MaybeHydronParameter param = Hydron::GetSpecifiedHydronParameter(id);
@@ -116,7 +115,7 @@ boost::optional<float> FeedLearning::CreateConnection_(Hydron &hydron
 
   if (id) {
     hydron.ConnectTo(*id);
-    return boost::optional<float>(id->DistanceTo(hydron.Id()));
+    return boost::optional<float>((*id - hydron.Id()).norm());
   }
 
   return boost::none;
