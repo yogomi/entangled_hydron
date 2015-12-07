@@ -4,3 +4,6 @@
 [submodule "include/x64_x32"]
 	path = include/x64_x32
 	url = https://github.com/yogomi/x64_x32_lib.git
+[submodule "include/speed-inspector"]
+	path = include/speed-inspector
+	url = https://github.com/yogomi/speed-inspector.git
