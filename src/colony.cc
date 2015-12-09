@@ -16,6 +16,7 @@
 #include "./colony.h"
 #include "learning_theory/learning_theory.h"
 #include "debug/log.h"
+#include "speed-inspector/speed-inspector.h"
 
 namespace hydron {
 
@@ -198,7 +199,7 @@ void Colony::Initialize_() {
 
 void Colony::Digest_() {
   int64_t born_or_death = learning_theory_->BornOrDeath(area_);
-  printf("%lu ", hydron_map_->size());
+  printf("%lu \n", hydron_map_->size());
   for (; born_or_death > 0; --born_or_death) {
     Hydron h = learning_theory_->CreateHydron(hydron_map_, area_);
     AddHydron(h);
@@ -270,9 +271,15 @@ void AlliedColonies::SetColony(const std::shared_ptr<Colony> &colony) {
 }
 
 void AlliedColonies::Beat() {
+  SpeedInspector::setCurrentTime();
   IgnitionAllColonies_();
+  SpeedInspector::printTimeSpend("Ignition All Colonies");
+  SpeedInspector::setCurrentTime();
   CalculateAllColoniesHeatEffect_();
+  SpeedInspector::printTimeSpend("Calculate All Colonies");
+  SpeedInspector::setCurrentTime();
   ApplyAllColoniesFeedback_();
+  SpeedInspector::printTimeSpend("Apply All Colonies Feedback");
 }
 
 void AlliedColonies::IgnitionAllColonies_() {
