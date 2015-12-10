@@ -73,6 +73,7 @@ int32_t Colony::AddHydron(const Hydron &hydron) {
   }
   (*hydron_map_)[hydron.Id()] = hydron;
   (*hydron_map_)[hydron.Id()].RegisterToAllHydronMap();
+  neighbor_hydron_searcher_in_colony_->AddVector(hydron.Id());
   idling_hydron_ranking_->push_back(hydron.Id());
 
   HydronConnections connecting_hydrons = hydron.ConnectingHydrons();
@@ -95,6 +96,7 @@ void Colony::DeleteHydron(const HydronId &id) {
 
   idling_hydron_ranking_->remove(id);
 
+  neighbor_hydron_searcher_in_colony_->RemoveVector(id);
   hydron_map_->erase(id);
   return;
 }
@@ -201,7 +203,9 @@ void Colony::Digest_() {
   int64_t born_or_death = learning_theory_->BornOrDeath(area_);
   printf("%lu \n", hydron_map_->size());
   for (; born_or_death > 0; --born_or_death) {
-    Hydron h = learning_theory_->CreateHydron(hydron_map_, area_);
+    Hydron h = learning_theory_->CreateHydron(hydron_map_
+                                      , area_
+                                      , neighbor_hydron_searcher_in_colony_);
     AddHydron(h);
   }
   for (; born_or_death < 0; ++born_or_death) {

@@ -33,8 +33,9 @@ class LearningTheory {
   virtual int64_t BornOrDeath(
                   const std::shared_ptr<struct ColonyArea> &area) = 0;
   virtual Hydron CreateHydron(
-                  const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , const std::shared_ptr<struct ColonyArea> &area) = 0;
+              const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+            , const std::shared_ptr<struct ColonyArea> &area
+            , std::shared_ptr<common3d::BlockGrid> &hydron_searcher) = 0; // NOLINT
 };
 
 std::shared_ptr<LearningTheory> CreateLearningTheory(

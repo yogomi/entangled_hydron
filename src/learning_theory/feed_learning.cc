@@ -61,7 +61,8 @@ int64_t FeedLearning::BornOrDeath(
 
 Hydron FeedLearning::CreateHydron(
               const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-              , const std::shared_ptr<struct ColonyArea> &area) {
+              , const std::shared_ptr<struct ColonyArea> &area
+              , std::shared_ptr<common3d::BlockGrid> &hydron_searcher) {  // NOLINT
   Hydron h = Hydron(Random<float>(area->min_area_vertix.x()
                                 , area->max_area_vertix.x())
               , Random<float>(area->min_area_vertix.y()
@@ -74,11 +75,8 @@ Hydron FeedLearning::CreateHydron(
   float create_connection_energy = energy_parameter_.create_hydron_cost;
   boost::optional<float> create_connection_cost;
 
-  common3d::NeighborhoodMap distance_map_in_colony;
-  for (auto const &hydron_info : *hydron_map) {
-    distance_map_in_colony[(self_id - hydron_info.first).norm()].push_back(
-                                                      hydron_info.first);
-  }
+  common3d::NeighborhoodMap distance_map_in_colony =
+                            hydron_searcher->GetNeighborsDistanceMap(self_id);
   while (create_connection_energy > 0.0f) {
     create_connection_cost = CreateConnection_(h, distance_map_in_colony);
     if (!create_connection_cost) break;

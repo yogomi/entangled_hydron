@@ -29,6 +29,7 @@ class Colony {
     , area_(new struct ColonyArea)
     , learning_theory_(new KeepCurrent)
     , hydron_map_(new std::map<HydronId, Hydron>)
+    , neighbor_hydron_searcher_in_colony_(new common3d::BlockGrid)
     , idling_hydron_ranking_(new std::list<HydronId>) {
       Initialize_();
     }
@@ -91,6 +92,7 @@ class Colony {
 
   std::string colony_name_;
   std::shared_ptr<std::map<HydronId, Hydron>> hydron_map_;
+  std::shared_ptr<common3d::BlockGrid> neighbor_hydron_searcher_in_colony_;
   std::shared_ptr<std::list<HydronId>> idling_hydron_ranking_;
   static std::map<HydronId, HydronIdList> connection_reverse_map_;
 };

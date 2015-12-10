@@ -156,7 +156,8 @@ void Hydron::ShowStatus() const {
   printf("threshold: %f; ", parameter_.threshold);
   printf("strength: %f; ", parameter_.strength);
   printf("radiation ability: %f; ", parameter_.radiation_ability);
-  printf("remaining refractory span: %d; ", parameter_.remaining_refractory_span);
+  printf("remaining refractory span: %d; "
+        , parameter_.remaining_refractory_span);
   printf("refractory period: %d; ", parameter_.refractory_period);
   printf("connectiong hydron count: %" PRIuS "; ", connecting_hydrons_.size());
   printf("connecting hydron ids: ");

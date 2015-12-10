@@ -25,8 +25,9 @@ int64_t KeepCurrent::BornOrDeath(
 }
 
 Hydron KeepCurrent::CreateHydron(
-                const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
-                , const std::shared_ptr<struct ColonyArea> &area) {
+              const std::shared_ptr<std::map<HydronId, Hydron>> &hydron_map
+              , const std::shared_ptr<struct ColonyArea> &area
+              , std::shared_ptr<common3d::BlockGrid> &hydron_searcher) {  // NOLINT
   return Hydron(area->min_area_vertix);
 }
 
